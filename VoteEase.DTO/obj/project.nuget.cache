@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "G+rYYhib/wMOO06o+PWb082eRb2zhcQ7SsKTfSWsXZbNUwf9uAM97+vD0QEDwO+YW5h11vC3gOeuxJ6NF1kskw==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\VoteEase\\VoteEase.DTO\\VoteEase.DTO.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\USER\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

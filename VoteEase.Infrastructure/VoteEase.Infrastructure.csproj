@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VoteEase.Application\VoteEase.Application.csproj" />
+    <ProjectReference Include="..\VoteEase.Domains\VoteEase.Domain.csproj" />
+    <ProjectReference Include="..\VoteEase.DTO\VoteEase.DTO.csproj" />
+    <ProjectReference Include="..\VoteEase.Mapper\VoteEase.Mapper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Vote\" />
+  </ItemGroup>
+
+</Project>
