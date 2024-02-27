@@ -41,5 +41,10 @@ namespace VoteEase.Data_Access.Implementation
             var entity = await table.FindAsync(id);
             dbContext.Remove(entity);
         }
+
+        public async Task<bool> SaveChanges()
+        {
+            return await dbContext.SaveChangesAsync() >= 0;
+        }
     }
 }

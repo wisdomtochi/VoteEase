@@ -4,22 +4,21 @@ using VoteEase.DTO.WriteDTO;
 
 namespace VoteEase.Mapper.Map
 {
-    public class Map
+    public static class Map
     {
-        public static ModelResult<T> GetModelResult<T>(List<T> entity, bool success, string message, MetaData metaData)
+        public static ModelResult<T> GetModelResult<T>(List<T> entity, bool success, string message)
         {
             var model = new ModelResult<T>
             {
                 Result = entity,
                 Succeeded = success,
-                Message = message,
-                MetaData = metaData
+                Message = message
             };
 
             return model;
         }
 
-        public static List<MemberDTO> Member(ICollection<Member> source)
+        public static List<MemberDTO> Member(IEnumerable<Member> source)
         {
             List<MemberDTO> members = source.Select(x => new MemberDTO()
             {
@@ -30,6 +29,19 @@ namespace VoteEase.Mapper.Map
             }).ToList();
 
             return members;
+        }
+
+        public static MemberDTO Member(Member source)
+        {
+            MemberDTO member = new MemberDTO()
+            {
+                Id = source.Id,
+                Name = source.Name,
+                PhoneNumber = source.PhoneNumber,
+                IsAccredited = source.IsAccredited
+            };
+
+            return member;
         }
 
         public static List<GroupDTO> Group(ICollection<Group> source)

@@ -7,5 +7,6 @@
         Task Create(T entity);
         void Update(T entity);
         Task Delete(Guid id);
+        Task<bool> SaveChanges();
     }
 }

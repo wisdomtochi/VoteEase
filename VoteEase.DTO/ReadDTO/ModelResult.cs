@@ -10,12 +10,5 @@ namespace VoteEase.DTO.ReadDTO
         public List<T> Result { get; set; }
         [JsonProperty("message")]
         public string Message { get; set; }
-        [JsonProperty("meta_data")]
-        public MetaData MetaData { get; set; }
-    }
-
-    public class MetaData
-    {
-        public DateTime DateCreated { get; set; } = DateTime.Now;
     }
 }

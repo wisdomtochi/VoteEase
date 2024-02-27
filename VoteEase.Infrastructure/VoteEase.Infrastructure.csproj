@@ -8,13 +8,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VoteEase.Application\VoteEase.Application.csproj" />
+    <ProjectReference Include="..\VoteEase.Data Access\VoteEase.Data Access.csproj" />
     <ProjectReference Include="..\VoteEase.Domains\VoteEase.Domain.csproj" />
     <ProjectReference Include="..\VoteEase.DTO\VoteEase.DTO.csproj" />
     <ProjectReference Include="..\VoteEase.Mapper\VoteEase.Mapper.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Vote\" />
   </ItemGroup>
 
 </Project>
