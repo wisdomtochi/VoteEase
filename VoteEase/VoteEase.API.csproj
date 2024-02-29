@@ -17,4 +17,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VoteEase.Application\VoteEase.Application.csproj" />
+    <ProjectReference Include="..\VoteEase.Domains\VoteEase.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
