@@ -6,8 +6,10 @@ namespace VoteEase.DTO.ReadDTO
     {
         [JsonProperty("succeeded")]
         public bool Succeeded { get; set; }
-        [JsonProperty("result")]
-        public List<T> Result { get; set; }
+        [JsonProperty("list_of_entities")]
+        public List<T>? ListOfEntities { get; set; }
+        [JsonProperty("entity")]
+        public T? Entity { get; set; }
         [JsonProperty("message")]
         public string Message { get; set; }
     }

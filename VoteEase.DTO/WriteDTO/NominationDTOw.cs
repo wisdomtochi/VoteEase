@@ -6,19 +6,17 @@ namespace VoteEase.DTO.WriteDTO
     public class NominationDTOw
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [JsonProperty("group_id")]
         [JsonIgnore]
         public Guid GroupId { get; set; }
         [JsonProperty("group")]
         public Group Group { get; set; }
-        [JsonProperty("counsellor_one")]
-        public Member CounsellorOne { get; set; }
-        [JsonProperty("counsellor_two")]
-        public Member CounsellorTwo { get; set; }
-        [JsonProperty("counsellor_three")]
-        public Member CounsellorThree { get; set; }
+        [JsonProperty("counsellors")]
+        public CounsellorCategory Counsellors { get; set; }
         [JsonProperty("people's_warden")]
-        public Member? PeoplesWarden { get; set; }
+        public PeoplesWardenCategory? PeoplesWarden { get; set; }
+        [JsonProperty("synod_delegates")]
+        public DelegatesCategory? Delegates { get; set; }
     }
 }

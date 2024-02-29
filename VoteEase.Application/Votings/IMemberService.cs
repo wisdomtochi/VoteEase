@@ -2,18 +2,18 @@
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 
-namespace VoteEase.Application.Vote
+namespace VoteEase.Application.Votings
 {
     public interface IMemberService
     {
-        Task<ModelResult<NominationDTO>> GetAllNominatedPersons();
+        Task<ModelResult<MemberDTO>> GetAllAccreditedMembers();
 
         #region crud
-        Task<MemberDTO> GetMember(Guid id);
+        Task<ModelResult<MemberDTO>> GetMember(Guid id);
         Task<ModelResult<MemberDTO>> GetAllMembers();
         Task<ModelResult<string>> CreateNewMember(Member member);
-        Task<string> UpdateMember(MemberDTO memberDTO);
-        Task<string> DeleteMember(Guid id);
+        Task<ModelResult<string>> UpdateMember(Member model, Guid memberId);
+        Task<ModelResult<string>> DeleteMember(Guid id);
         #endregion
     }
 }

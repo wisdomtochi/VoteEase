@@ -6,17 +6,33 @@ namespace VoteEase.Domains.Entities
     public class Nomination
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid GroupId { get; set; }
         [Required]
         [ForeignKey("GroupId")]
         public Group Group { get; set; }
         [Required]
+        public CounsellorCategory Counsellors { get; set; }
+        public PeoplesWardenCategory? PeoplesWarden { get; set; }
+        public DelegatesCategory? Delegates { get; set; }
+    }
+
+    public class CounsellorCategory
+    {
         public Member CounsellorOne { get; set; }
-        [Required]
         public Member CounsellorTwo { get; set; }
-        [Required]
         public Member CounsellorThree { get; set; }
-        public Member? PeoplesWarden { get; set; }
+    }
+
+
+    public class PeoplesWardenCategory
+    {
+        public Member PeoplesWarden { get; set; }
+    }
+
+    public class DelegatesCategory
+    {
+        public Member DelegateOne { get; set; }
+        public Member DelegateTwo { get; set; }
     }
 }

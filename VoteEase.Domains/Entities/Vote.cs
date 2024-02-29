@@ -5,7 +5,7 @@ namespace VoteEase.Domains.Entities
     public class Vote
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public Member Member { get; set; }
         [Required]
