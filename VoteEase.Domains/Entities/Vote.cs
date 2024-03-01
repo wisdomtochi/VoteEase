@@ -11,5 +11,6 @@ namespace VoteEase.Domains.Entities
         [Required]
         public Member Counsellor { get; set; }
         public Member PeoplesWarden { get; set; }
+        public Member SynodDelegate { get; set; }
     }
 }

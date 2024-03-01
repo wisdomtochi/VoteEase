@@ -209,7 +209,8 @@ namespace VoteEase.Mapper.Map
                 Id = source.Id,
                 Member = source.Member,
                 Counsellor = source.Counsellor,
-                PeoplesWarden = source.PeoplesWarden
+                PeoplesWarden = source.PeoplesWarden,
+                SynodDelegate = source.SynodDelegate
             };
 
             return vote;
@@ -227,7 +228,8 @@ namespace VoteEase.Mapper.Map
                 Id = x.Id,
                 Member = x.Member,
                 Counsellor = x.Counsellor,
-                PeoplesWarden = x.PeoplesWarden
+                PeoplesWarden = x.PeoplesWarden,
+                SynodDelegate = x.SynodDelegate
             }).ToList();
 
             return votes;

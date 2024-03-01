@@ -32,7 +32,6 @@ namespace VoteEase.Domains.Entities
 
     public class DelegatesCategory
     {
-        public Member DelegateOne { get; set; }
-        public Member DelegateTwo { get; set; }
+        public Member Delegate { get; set; }
     }
 }

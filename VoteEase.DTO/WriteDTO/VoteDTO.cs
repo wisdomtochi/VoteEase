@@ -13,5 +13,7 @@ namespace VoteEase.DTO.WriteDTO
         public Member Counsellor { get; set; }
         [JsonProperty("people's_warden")]
         public Member? PeoplesWarden { get; set; }
+        [JsonProperty("synod_delegate")]
+        public Member? SynodDelegate { get; set; }
     }
 }
