@@ -234,6 +234,23 @@ namespace VoteEase.Mapper.Map
 
             return votes;
         }
+
+        /// <summary>
+        /// Method to get the vote result
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static VoteResultDTO VoteResult(VoteResultDTO source)
+        {
+            VoteResultDTO voteResult = new()
+            {
+                CounsellorVotes = source.CounsellorVotes,
+                PeoplesWardenVotes = source.PeoplesWardenVotes,
+                SynodDelegateVotes = source.SynodDelegateVotes
+            };
+
+            return voteResult;
+        }
         #endregion
     }
 }

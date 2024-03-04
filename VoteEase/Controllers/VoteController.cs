@@ -2,6 +2,7 @@
 using VoteEase.API.Helpers;
 using VoteEase.Application.Votings;
 using VoteEase.Domains.Entities;
+using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 
 namespace VoteEase.API.Controllers
@@ -17,6 +18,27 @@ namespace VoteEase.API.Controllers
             this.voteService = voteService;
         }
 
+        [HttpGet]
+        [Route("vote-result")]
+        public async Task<IActionResult> VoteResult()
+        {
+            try
+            {
+                var voteResult = await voteService.CountVoteResult();
+                return Ok(new JsonMessage<VoteResultDTO>
+                {
+                    Status = true,
+                    Result = voteResult.Entity,
+                    SuccessMessage = voteResult.Message
+                });
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        #region crud
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAllVotes()
@@ -141,5 +163,6 @@ namespace VoteEase.API.Controllers
                 throw;
             }
         }
+        #endregion
     }
 }

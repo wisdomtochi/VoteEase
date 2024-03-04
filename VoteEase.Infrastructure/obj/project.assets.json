@@ -2009,9 +2009,11 @@
           "ClosedXML": "0.102.2",
           "ExcelDataReader": "3.6.0",
           "ExcelDataReader.DataSet": "3.6.0",
+          "Hangfire": "1.8.11",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.6",
           "Pomelo.EntityFrameworkCore.MySql": "6.0.1",
           "SendGrid": "9.29.2",
+          "Serilog": "2.12.0",
           "VoteEase.DTO": "1.0.0"
         },
         "compile": {

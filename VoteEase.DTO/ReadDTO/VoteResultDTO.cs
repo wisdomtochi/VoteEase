@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using VoteEase.Domains.Entities;
-
-namespace VoteEase.DTO.ReadDTO
+﻿namespace VoteEase.DTO.ReadDTO
 {
     public class VoteResultDTO
     {
-        [JsonProperty("member_name")]
-        public Member Member { get; set; }
-        [JsonProperty("number_of_votes")]
-        public IEnumerable<int> Count { get; set; }
+
+        public Dictionary<string, IEnumerable<MemberCount>> CounsellorVotes { get; set; }
+        public Dictionary<string, IEnumerable<MemberCount>> PeoplesWardenVotes { get; set; }
+        public Dictionary<string, IEnumerable<MemberCount>> SynodDelegateVotes { get; set; }
+    }
+
+    public class MemberCount
+    {
+        public string MemberName { get; set; }
+        public int Count { get; set; }
     }
 }

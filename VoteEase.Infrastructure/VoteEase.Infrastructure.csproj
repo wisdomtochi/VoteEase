@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.8.11" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VoteEase.Application\VoteEase.Application.csproj" />
     <ProjectReference Include="..\VoteEase.Data Access\VoteEase.Data Access.csproj" />
     <ProjectReference Include="..\VoteEase.Domains\VoteEase.Domain.csproj" />

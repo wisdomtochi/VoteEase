@@ -46,5 +46,15 @@ namespace VoteEase.Data_Access.Implementation
         {
             return await dbContext.SaveChangesAsync() >= 0;
         }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            table.AddRange(entities);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            table.RemoveRange(entities);
+        }
     }
 }

@@ -11,37 +11,75 @@ namespace VoteEase.Infrastructure.Votings
     {
         private readonly IGenericRepository<Vote> voteGenericRepository;
         private readonly IGenericRepository<Nomination> nominationGenericRepository;
+        private readonly IGenericRepository<Member> memberGenericRepository;
 
         public VoteService(IGenericRepository<Vote> voteGenericRepository,
-                            IGenericRepository<Nomination> nominationGenericRepository)
+                            IGenericRepository<Nomination> nominationGenericRepository,
+                                  IGenericRepository<Member> memberGenericRepository)
         {
             this.voteGenericRepository = voteGenericRepository;
             this.nominationGenericRepository = nominationGenericRepository;
+            this.memberGenericRepository = memberGenericRepository;
         }
 
-        public async Task<VoteResultDTO> CountVoteResult()
+        public async Task<ModelResult<VoteResultDTO>> CountVoteResult()
         {
             try
             {
                 IEnumerable<Vote> allVotes = await voteGenericRepository.ReadAll();
+                //if (!allVotes.Any()) return Map.GetModelResult<string>(null, null, false, "No vote found");
 
-                var votesByCategory = allVotes
-                                        .GroupBy(c => c.Counsellor)
-                                        .Concat(allVotes.GroupBy(p => p.PeoplesWarden))
-                                        .Concat(allVotes.GroupBy(s => s.SynodDelegate))
-                                        .Select(x => new
-                                        {
-                                            Member = x.Key,
-                                            Count = x.Count()
-                                        }).ToList();
+                var counsellorVotes = allVotes
+                                .Where(vote => vote.Counsellor != null)
+                                .GroupBy(vote => vote.Counsellor)
+                                .Select(group => new
+                                {
+                                    Category = group.Key,
+                                    Members = group.GroupBy(vote => vote.Counsellor.Name)
+                                                    .Select(x => new
+                                                    {
+                                                        MemberName = x.Key,
+                                                        Count = x.Count()
+                                                    })
+                                });
 
-                VoteResultDTO voteResult = new()
+                var peoplesWardenVotes = allVotes
+                                .Where(vote => vote.PeoplesWarden != null)
+                                .GroupBy(vote => vote.PeoplesWarden)
+                                .Select(group => new
+                                {
+                                    Category = group.Key,
+                                    Members = group.GroupBy(vote => vote.PeoplesWarden.Name)
+                                                    .Select(x => new
+                                                    {
+                                                        MemberName = x.Key,
+                                                        Count = x.Count()
+                                                    })
+                                });
+
+                var synodDelegateVotes = allVotes
+                                .Where(vote => vote.SynodDelegate != null)
+                                .GroupBy(vote => vote.SynodDelegate)
+                                .Select(group => new
+                                {
+                                    Category = group.Key,
+                                    Members = group.GroupBy(vote => vote.SynodDelegate.Name)
+                                                    .Select(x => new
+                                                    {
+                                                        MemberName = x.Key,
+                                                        Count = x.Count()
+                                                    })
+                                });
+
+                var voteResult = new VoteResultDTO
                 {
-                    Member = (Member)votesByCategory.Select(x => x.Member),
-                    Count = votesByCategory.Select(x => x.Count)
+                    CounsellorVotes = (Dictionary<string, IEnumerable<MemberCount>>)counsellorVotes,
+                    PeoplesWardenVotes = (Dictionary<string, IEnumerable<MemberCount>>)peoplesWardenVotes,
+                    SynodDelegateVotes = (Dictionary<string, IEnumerable<MemberCount>>)synodDelegateVotes
                 };
 
-                return voteResult;
+                var result = Map.VoteResult(voteResult);
+                return Map.GetModelResult(result, null, true, "Vote Result");
             }
             catch (Exception ex)
             {
@@ -87,9 +125,11 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                var checkVote = await voteGenericRepository.ReadSingle(vote.Id);
                 var nominations = await nominationGenericRepository.ReadAll();
+                var checkVote = await voteGenericRepository.ReadSingle(vote.Id);
                 if (checkVote != null) return Map.GetModelResult<string>(null, null, false, "Vote Already Exists");
+
+
 
                 Vote newVote = new()
                 {
@@ -99,6 +139,10 @@ namespace VoteEase.Infrastructure.Votings
                     PeoplesWarden = vote.PeoplesWarden,
                     SynodDelegate = vote.SynodDelegate
                 };
+
+                //checking if the member is accredited
+                var memberIsAccredited = await memberGenericRepository.ReadSingle(newVote.Member.Id);
+                if (!memberIsAccredited.IsAccredited.Equals(true)) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. " + checkMember.Name + " you cannot vote because you are unaccredited.");
 
                 //iterating through the nominations in the database
                 foreach (var nomination in nominations)
