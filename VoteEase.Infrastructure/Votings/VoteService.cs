@@ -142,7 +142,7 @@ namespace VoteEase.Infrastructure.Votings
 
                 //checking if the member is accredited
                 var memberIsAccredited = await memberGenericRepository.ReadSingle(newVote.Member.Id);
-                if (!memberIsAccredited.IsAccredited.Equals(true)) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. " + checkMember.Name + " you cannot vote because you are unaccredited.");
+                if (!memberIsAccredited.IsAccredited.Equals(true)) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. " + memberIsAccredited.Name + " you cannot vote because you are unaccredited.");
 
                 //iterating through the nominations in the database
                 foreach (var nomination in nominations)

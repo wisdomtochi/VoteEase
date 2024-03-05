@@ -75,6 +75,10 @@
             "Serilog": {
               "target": "Package",
               "version": "[2.12.0, )"
+            },
+            "VG.Serilog.Sinks.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[1.0.0, )"
             }
           },
           "imports": [
@@ -406,6 +410,10 @@
             "Serilog": {
               "target": "Package",
               "version": "[2.12.0, )"
+            },
+            "VG.Serilog.Sinks.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[1.0.0, )"
             }
           },
           "imports": [

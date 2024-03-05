@@ -5,5 +5,7 @@ namespace VoteEase.Application.Error
     public interface IErrorService
     {
         void LogError(Exception ex);
-        void SaveError(string message, LogEventLevel logEventLevel);
-  
+        void SaveError(Exception ex, LogEventLevel logEventLevel);
+        Task CleanupLogs();
+    }
+}

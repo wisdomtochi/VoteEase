@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VoteEase.Application\VoteEase.Application.csproj" />
     <ProjectReference Include="..\VoteEase.Domains\VoteEase.Domain.csproj" />
+    <ProjectReference Include="..\VoteEase.Infrastructure\VoteEase.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

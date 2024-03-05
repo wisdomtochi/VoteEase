@@ -21,19 +21,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteEase.Data Access", "Vot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DTO", "DTO", "{62141B9A-4A5A-47CA-9403-2966941D1AB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteEase.DTO", "VoteEase.DTO\VoteEase.DTO.csproj", "{3A6D5439-FD68-4CDD-9BA1-62CE0F9EECF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteEase.DTO", "VoteEase.DTO\VoteEase.DTO.csproj", "{3A6D5439-FD68-4CDD-9BA1-62CE0F9EECF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{2F7C7D4A-BCA5-4C8D-9E8F-CAFC66446CE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteEase.Application", "VoteEase.Application\VoteEase.Application.csproj", "{D95A9254-74F8-40E9-BB85-5FF3195E3B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteEase.Application", "VoteEase.Application\VoteEase.Application.csproj", "{D95A9254-74F8-40E9-BB85-5FF3195E3B97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2C4806ED-6982-469C-BE7B-CA3D447FD5A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapper", "Mapper", "{18383D25-A0DA-4927-9927-45D864F9CC2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteEase.Mapper", "VoteEase.Mapper\VoteEase.Mapper.csproj", "{52EB4074-5278-4325-A22B-D40A5F14A71C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteEase.Mapper", "VoteEase.Mapper\VoteEase.Mapper.csproj", "{52EB4074-5278-4325-A22B-D40A5F14A71C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteEase.Infrastructure", "VoteEase.Infrastructure\VoteEase.Infrastructure.csproj", "{5B974361-75ED-4B64-A608-D19220F46DBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteEase.Infrastructure", "VoteEase.Infrastructure\VoteEase.Infrastructure.csproj", "{5B974361-75ED-4B64-A608-D19220F46DBC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC", "IoC", "{0DDAE542-1682-44D0-9CAC-B811ECD8705A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteEase.IoC", "VoteEase.IoC\VoteEase.IoC.csproj", "{4788BF1B-0D6D-4EBF-BB02-47AABB674B96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +77,10 @@ Global
 		{5B974361-75ED-4B64-A608-D19220F46DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B974361-75ED-4B64-A608-D19220F46DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B974361-75ED-4B64-A608-D19220F46DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4788BF1B-0D6D-4EBF-BB02-47AABB674B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4788BF1B-0D6D-4EBF-BB02-47AABB674B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4788BF1B-0D6D-4EBF-BB02-47AABB674B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4788BF1B-0D6D-4EBF-BB02-47AABB674B96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +94,7 @@ Global
 		{D95A9254-74F8-40E9-BB85-5FF3195E3B97} = {2F7C7D4A-BCA5-4C8D-9E8F-CAFC66446CE9}
 		{52EB4074-5278-4325-A22B-D40A5F14A71C} = {18383D25-A0DA-4927-9927-45D864F9CC2E}
 		{5B974361-75ED-4B64-A608-D19220F46DBC} = {2C4806ED-6982-469C-BE7B-CA3D447FD5A5}
+		{4788BF1B-0D6D-4EBF-BB02-47AABB674B96} = {0DDAE542-1682-44D0-9CAC-B811ECD8705A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C366AC79-AB93-411C-9F73-586C1984C441}

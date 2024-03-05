@@ -4,6 +4,7 @@ using VoteEase.Application.Votings;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
+using VoteEase.Infrastructure.Error;
 
 namespace VoteEase.API.Controllers
 {
@@ -34,7 +35,9 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                ErrorService errorService = new();
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -60,7 +63,9 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                ErrorService errorService = new();
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -85,7 +90,9 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                ErrorService errorService = new();
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -110,7 +117,9 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                ErrorService errorService = new();
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -135,7 +144,9 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                ErrorService errorService = new();
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -160,7 +171,9 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                ErrorService errorService = new();
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
             }
         }
         #endregion
