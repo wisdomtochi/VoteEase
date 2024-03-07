@@ -10,4 +10,10 @@
     <PackageReference Include="Hangfire" Version="1.8.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VoteEase.Application\VoteEase.Application.csproj" />
+    <ProjectReference Include="..\VoteEase.Data\VoteEase.Data.csproj" />
+    <ProjectReference Include="..\VoteEase.Infrastructure\VoteEase.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

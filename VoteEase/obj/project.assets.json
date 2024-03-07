@@ -2247,6 +2247,7 @@
           "VG.Serilog.Sinks.EntityFrameworkCore": "1.0.0",
           "VoteEase.Application": "1.0.0",
           "VoteEase.DTO": "1.0.0",
+          "VoteEase.Data": "1.0.0",
           "VoteEase.Data Access": "1.0.0",
           "VoteEase.Domain": "1.0.0",
           "VoteEase.Mapper": "1.0.0"

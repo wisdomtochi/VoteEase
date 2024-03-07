@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VoteEase.API.Helpers;
+using VoteEase.Application.Error;
 using VoteEase.Application.Votings;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.WriteDTO;
-using VoteEase.Infrastructure.Error;
 
 namespace VoteEase.API.Controllers
 {
@@ -12,10 +12,12 @@ namespace VoteEase.API.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupService groupService;
+        private readonly IErrorService errorService;
 
-        public GroupController(IGroupService groupService)
+        public GroupController(IGroupService groupService, IErrorService errorService)
         {
             this.groupService = groupService;
+            this.errorService = errorService;
         }
 
         [HttpGet]
@@ -39,7 +41,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -66,7 +67,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -93,7 +93,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -120,7 +119,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -147,7 +145,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }

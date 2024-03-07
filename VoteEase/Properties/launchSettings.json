@@ -16,7 +16,9 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7151;http://localhost:5222",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "WebApiDatabase_Production": "server=localhost; database=voteease_Developement_Db; user=root; password=2145WAT",
+        "WebApiDatabase_Staging": "server=localhost; database=voteease_Developement_Db; user=root; password=2145WAT"
       }
     },
     "IIS Express": {

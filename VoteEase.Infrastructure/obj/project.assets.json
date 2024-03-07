@@ -6455,6 +6455,7 @@
       "VG.Serilog.Sinks.EntityFrameworkCore >= 1.0.0",
       "VoteEase.Application >= 1.0.0",
       "VoteEase.DTO >= 1.0.0",
+      "VoteEase.Data >= 1.0.0",
       "VoteEase.Data Access >= 1.0.0",
       "VoteEase.Domain >= 1.0.0",
       "VoteEase.Mapper >= 1.0.0"
@@ -6492,6 +6493,9 @@
             },
             "C:\\Projects\\VoteEase\\VoteEase.Data Access\\VoteEase.Data Access.csproj": {
               "projectPath": "C:\\Projects\\VoteEase\\VoteEase.Data Access\\VoteEase.Data Access.csproj"
+            },
+            "C:\\Projects\\VoteEase\\VoteEase.Data\\VoteEase.Data.csproj": {
+              "projectPath": "C:\\Projects\\VoteEase\\VoteEase.Data\\VoteEase.Data.csproj"
             },
             "C:\\Projects\\VoteEase\\VoteEase.Domains\\VoteEase.Domain.csproj": {
               "projectPath": "C:\\Projects\\VoteEase\\VoteEase.Domains\\VoteEase.Domain.csproj"

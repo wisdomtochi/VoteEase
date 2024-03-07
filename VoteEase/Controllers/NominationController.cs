@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VoteEase.API.Helpers;
+using VoteEase.Application.Error;
 using VoteEase.Application.Votings;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
-using VoteEase.Infrastructure.Error;
 
 namespace VoteEase.API.Controllers
 {
@@ -13,10 +13,12 @@ namespace VoteEase.API.Controllers
     public class NominationController : ControllerBase
     {
         private readonly INominationService nominationService;
+        private readonly IErrorService errorService;
 
-        public NominationController(INominationService nominationService)
+        public NominationController(INominationService nominationService, IErrorService errorService)
         {
             this.nominationService = nominationService;
+            this.errorService = errorService;
         }
 
         #region ADD NEW NOMINATION
@@ -55,7 +57,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -90,7 +91,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -123,7 +123,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -157,7 +156,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -190,7 +188,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -223,7 +220,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -252,7 +248,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }
@@ -296,7 +291,6 @@ namespace VoteEase.API.Controllers
             }
             catch (Exception e)
             {
-                ErrorService errorService = new();
                 errorService.LogError(e);
                 return StatusCode(500, "Internal Server Error");
             }

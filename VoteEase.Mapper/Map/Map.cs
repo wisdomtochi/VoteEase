@@ -1,4 +1,5 @@
-﻿using VoteEase.Domains.Entities;
+﻿using VoteEase.Domain.Entities.Auth;
+using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 
@@ -250,6 +251,41 @@ namespace VoteEase.Mapper.Map
             };
 
             return voteResult;
+        }
+        #endregion
+
+        #region Admin Section
+        /// <summary>
+        /// Method to convert the Vote entity to the Vote DTO
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static AdminDTOw Admin(Admin source)
+        {
+            AdminDTOw admin = new()
+            {
+                Id = source.Id,
+                Position = source.Position,
+                EmailAddress = source.EmailAddress
+            };
+            return admin;
+        }
+
+        /// <summary>
+        /// Method to convert the list of Vote entity to list of Vote DTO
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static List<AdminDTOw> Admin(IEnumerable<Admin> source)
+        {
+            List<AdminDTOw> adminList = source.Select(admin => new AdminDTOw()
+            {
+                Id = admin.Id,
+                Position = admin.Position,
+                EmailAddress = admin.EmailAddress
+            }).ToList();
+
+            return adminList;
         }
         #endregion
     }
