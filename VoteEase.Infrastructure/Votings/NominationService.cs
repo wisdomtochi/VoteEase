@@ -1,5 +1,6 @@
 ﻿using VoteEase.Application.Votings;
 using VoteEase.Data_Access.Interface;
+using VoteEase.Domain.Entities;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
@@ -10,10 +11,13 @@ namespace VoteEase.Infrastructure.Votings
     public class NominationService : INominationService
     {
         private readonly IGenericRepository<Nomination> nominationGenericRepository;
+        private readonly IGenericRepository<AccreditedMember> accreditedMemberGenericRepository;
 
-        public NominationService(IGenericRepository<Nomination> nominationGenericRepository)
+        public NominationService(IGenericRepository<Nomination> nominationGenericRepository,
+                                IGenericRepository<AccreditedMember> accreditedMemberGenericRepository)
         {
             this.nominationGenericRepository = nominationGenericRepository;
+            this.accreditedMemberGenericRepository = accreditedMemberGenericRepository;
         }
 
         public async Task<ModelResult<NominationDTO>> GetNominatedPersons()
@@ -107,14 +111,70 @@ namespace VoteEase.Infrastructure.Votings
                     Id = nomination.Id,
                     GroupId = nomination.GroupId,
                     Group = nomination.Group,
+                    DateCreated = DateTime.UtcNow,
                     Counsellors = nomination.Counsellors,
                     PeoplesWarden = nomination.PeoplesWarden,
                     Delegates = nomination.Delegates
                 };
 
-                await nominationGenericRepository.Create(newNomination);
-                await nominationGenericRepository.SaveChanges();
-                return Map.GetModelResult<string>(null, null, true, "Nomination Created");
+                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newNomination.Group.LeaderId);
+                if (memberIsAccredited == null) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. You are unaccredited.");
+
+                //checking if the groupId of the person nominating matches the groupId of all the people he is nominating
+                if (nomination.GroupId.Equals(nomination.Counsellors.CounsellorOne.GroupId) && nomination.GroupId.Equals(nomination.Counsellors.CounsellorTwo.GroupId)
+                    && nomination.GroupId.Equals(nomination.Counsellors.CounsellorThree.GroupId))
+                {
+                    if (nomination.PeoplesWarden.PeoplesWarden != null)
+                    {
+                        if (!nomination.GroupId.Equals(nomination.PeoplesWarden.PeoplesWarden.GroupId))
+                        {
+                            return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful. Nominate only people from your group.");
+                        }
+                        else
+                        {
+                            if (nomination.Delegates.Delegate != null)
+                            {
+                                if (!nomination.GroupId.Equals(nomination.Delegates.Delegate.GroupId))
+                                {
+                                    return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful. Nominate only people from your group.");
+                                }
+                                else
+                                {
+                                    await nominationGenericRepository.Create(newNomination);
+                                    await nominationGenericRepository.SaveChanges();
+                                    return Map.GetModelResult<string>(null, null, true, "Nomination Created");
+                                }
+                            }
+                            else
+                            {
+                                await nominationGenericRepository.Create(newNomination);
+                                await nominationGenericRepository.SaveChanges();
+                                return Map.GetModelResult<string>(null, null, true, "Nomination Created");
+                            }
+                        }
+                    }
+                    else if (nomination.Delegates.Delegate != null)
+                    {
+                        if (!nomination.GroupId.Equals(nomination.Delegates.Delegate.GroupId))
+                        {
+                            return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful. Nominate only people from your group.");
+                        }
+                        else
+                        {
+                            await nominationGenericRepository.Create(newNomination);
+                            await nominationGenericRepository.SaveChanges();
+                            return Map.GetModelResult<string>(null, null, true, "Nomination Created");
+                        }
+                    }
+                    else
+                    {
+                        await nominationGenericRepository.Create(newNomination);
+                        await nominationGenericRepository.SaveChanges();
+                        return Map.GetModelResult<string>(null, null, true, "Nomination Created");
+                    }
+                }
+
+                return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful.Nominate only people from your group.");
             }
             catch (Exception ex)
             {
@@ -128,18 +188,76 @@ namespace VoteEase.Infrastructure.Votings
                 var checkNomination = await nominationGenericRepository.ReadSingle(nominationId);
                 if (checkNomination == null) return Map.GetModelResult<string>(null, null, false, "Nomination Not Found");
 
+
                 Nomination newNomination = new()
                 {
                     Id = nomination.Id,
                     GroupId = nomination.GroupId,
                     Group = nomination.Group,
+                    DateCreated = DateTime.UtcNow,
                     Counsellors = nomination.Counsellors,
                     PeoplesWarden = nomination.PeoplesWarden,
                     Delegates = nomination.Delegates
                 };
 
-                nominationGenericRepository.Update(newNomination);
-                await nominationGenericRepository.SaveChanges();
+                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newNomination.Group.LeaderId);
+                if (memberIsAccredited == null) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. You are unaccredited.");
+
+                //checking if the groupId of the person nominating matches the groupId of all the people he is nominating
+
+                if (nomination.GroupId.Equals(nomination.Counsellors.CounsellorOne.GroupId) && nomination.GroupId.Equals(nomination.Counsellors.CounsellorTwo.GroupId)
+                    && nomination.GroupId.Equals(nomination.Counsellors.CounsellorThree.GroupId))
+                {
+                    if (nomination.PeoplesWarden.PeoplesWarden != null)
+                    {
+                        if (!nomination.GroupId.Equals(nomination.PeoplesWarden.PeoplesWarden.GroupId))
+                        {
+                            return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful. Nominate only people from your group.");
+                        }
+                        else
+                        {
+                            if (nomination.Delegates.Delegate != null)
+                            {
+                                if (!nomination.GroupId.Equals(nomination.Delegates.Delegate.GroupId))
+                                {
+                                    return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful. Nominate only people from your group.");
+                                }
+                                else
+                                {
+                                    nominationGenericRepository.Update(newNomination);
+                                    await nominationGenericRepository.SaveChanges();
+                                    return Map.GetModelResult<string>(null, null, true, "Nomination Has Been Updated");
+                                }
+                            }
+                            else
+                            {
+                                nominationGenericRepository.Update(newNomination);
+                                await nominationGenericRepository.SaveChanges();
+                                return Map.GetModelResult<string>(null, null, true, "Nomination Has Been Updated");
+                            }
+                        }
+                    }
+                    else if (nomination.Delegates.Delegate != null)
+                    {
+                        if (!nomination.GroupId.Equals(nomination.Delegates.Delegate.GroupId))
+                        {
+                            return Map.GetModelResult<string>(null, null, false, "Nomination Unsuccessful. Nominate only people from your group.");
+                        }
+                        else
+                        {
+                            nominationGenericRepository.Update(newNomination);
+                            await nominationGenericRepository.SaveChanges();
+                            return Map.GetModelResult<string>(null, null, true, "Nomination Has Been Updated");
+                        }
+                    }
+                    else
+                    {
+                        nominationGenericRepository.Update(newNomination);
+                        await nominationGenericRepository.SaveChanges();
+                        return Map.GetModelResult<string>(null, null, true, "Nomination Has Been Updated");
+                    }
+                }
+
                 return Map.GetModelResult<string>(null, null, true, "Nomination Has Been Updated");
             }
             catch (Exception ex)

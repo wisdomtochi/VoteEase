@@ -4,6 +4,7 @@
     {
         public static string DotNetEnvironmentKey { get { return "ASPNETCORE_ENVIRONMENT"; } }
 
-        public static string MembersExcelFileName { get { return "Members list"; } }
+        public static string MembersExcelWorkbookFileName { get { return "VoteEase_Members_Workbook"; } }
+        public static string MembersListingExcelWorksheetName { get { return "VoteEase Members Listing"; } }
     }
 }

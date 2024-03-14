@@ -30,6 +30,9 @@
             "projectReferences": {
               "C:\\Projects\\VoteEase\\VoteEase.DTO\\VoteEase.DTO.csproj": {
                 "projectPath": "C:\\Projects\\VoteEase\\VoteEase.DTO\\VoteEase.DTO.csproj"
+              },
+              "C:\\Projects\\VoteEase\\VoteEase.Mapper\\VoteEase.Mapper.csproj": {
+                "projectPath": "C:\\Projects\\VoteEase\\VoteEase.Mapper\\VoteEase.Mapper.csproj"
               }
             }
           }

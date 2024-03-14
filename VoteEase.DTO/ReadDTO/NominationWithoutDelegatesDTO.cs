@@ -7,11 +7,13 @@ namespace VoteEase.DTO.ReadDTO
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }
-        [JsonProperty("group_id")]
+        [JsonProperty("group-Id")]
         [JsonIgnore]
         public Guid GroupId { get; set; }
         [JsonProperty("group")]
         public Group Group { get; set; }
+        [JsonProperty("date-added")]
+        public DateTime DateAdded { get; set; }
         [JsonProperty("counsellors")]
         public CounsellorCategory Counsellors { get; set; }
         [JsonProperty("people's_warden")]

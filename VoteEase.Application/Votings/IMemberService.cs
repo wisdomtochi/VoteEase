@@ -1,4 +1,5 @@
-﻿using VoteEase.Domains.Entities;
+﻿using VoteEase.Application.Helpers;
+using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 
@@ -6,7 +7,7 @@ namespace VoteEase.Application.Votings
 {
     public interface IMemberService
     {
-        Task<ModelResult<MemberDTO>> GetAllAccreditedMembers();
+        Task<ModelResult<string>> AddMembersFromExcel(List<MemberExcelSheet> model);
 
         #region crud
         Task<ModelResult<MemberDTO>> GetMember(Guid id);

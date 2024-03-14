@@ -4,13 +4,19 @@ namespace VoteEase.DTO.WriteDTO
 {
     public class MemberDTO
     {
-        [JsonProperty("id")]
+        [JsonProperty("member_Id")]
         public Guid Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("phone_number")]
-        public string PhoneNumber { get; set; }
-        [JsonProperty("is_accredited")]
-        public bool IsAccredited { get; set; }
+        [JsonProperty("email_address")]
+        public string EmailAddress { get; set; }
+        [JsonProperty("group_Id")]
+        [JsonIgnore]
+        public Guid GroupId { get; set; }
+        [JsonProperty("date_created")]
+        public DateTime DateCreated { get; set; }
+        [JsonProperty("group_name")]
+        [JsonIgnore]
+        public string GroupName { get; set; }
     }
 }

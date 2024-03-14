@@ -12,6 +12,7 @@ namespace VoteEase.DTO.WriteDTO
         public Guid GroupId { get; set; }
         [JsonProperty("group")]
         public Group Group { get; set; }
+        public DateTime DateCreated { get; set; }
         [JsonProperty("counsellors")]
         public CounsellorCategory Counsellors { get; set; }
         [JsonProperty("people's_warden")]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using VoteEase.Domain.Entities;
 using VoteEase.Domain.Entities.Auth;
 using VoteEase.Domain.Entities.Errors;
 using VoteEase.Domains.Entities;
@@ -18,6 +19,7 @@ namespace VoteEase.Data.Context
         public virtual DbSet<Vote> Votes { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<AccreditedMember> AccreditedMembers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -11,6 +11,7 @@ namespace VoteEase.Domains.Entities
         [Required]
         [ForeignKey("GroupId")]
         public Group Group { get; set; }
+        public DateTime DateCreated { get; set; }
         [Required]
         public CounsellorCategory Counsellors { get; set; }
         public PeoplesWardenCategory? PeoplesWarden { get; set; }

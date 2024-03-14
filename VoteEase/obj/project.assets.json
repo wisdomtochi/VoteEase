@@ -2178,7 +2178,8 @@
           "SendGrid": "9.29.2",
           "Serilog": "2.12.0",
           "VG.Serilog.Sinks.EntityFrameworkCore": "1.0.0",
-          "VoteEase.DTO": "1.0.0"
+          "VoteEase.DTO": "1.0.0",
+          "VoteEase.Mapper": "1.0.0"
         },
         "compile": {
           "bin/placeholder/VoteEase.Application.dll": {}
@@ -2257,6 +2258,22 @@
         },
         "runtime": {
           "bin/placeholder/VoteEase.Infrastructure.dll": {}
+        }
+      },
+      "VoteEase.IoC/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Hangfire": "1.8.11",
+          "VoteEase.Application": "1.0.0",
+          "VoteEase.Data": "1.0.0",
+          "VoteEase.Infrastructure": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/VoteEase.IoC.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/VoteEase.IoC.dll": {}
         }
       },
       "VoteEase.Mapper/1.0.0": {
@@ -6679,6 +6696,11 @@
       "path": "../VoteEase.Infrastructure/VoteEase.Infrastructure.csproj",
       "msbuildProject": "../VoteEase.Infrastructure/VoteEase.Infrastructure.csproj"
     },
+    "VoteEase.IoC/1.0.0": {
+      "type": "project",
+      "path": "../VoteEase.IoC/VoteEase.IoC.csproj",
+      "msbuildProject": "../VoteEase.IoC/VoteEase.IoC.csproj"
+    },
     "VoteEase.Mapper/1.0.0": {
       "type": "project",
       "path": "../VoteEase.Mapper/VoteEase.Mapper.csproj",
@@ -6690,7 +6712,8 @@
       "Swashbuckle.AspNetCore >= 6.2.3",
       "VoteEase.Application >= 1.0.0",
       "VoteEase.Domain >= 1.0.0",
-      "VoteEase.Infrastructure >= 1.0.0"
+      "VoteEase.Infrastructure >= 1.0.0",
+      "VoteEase.IoC >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6728,6 +6751,9 @@
             },
             "C:\\Projects\\VoteEase\\VoteEase.Infrastructure\\VoteEase.Infrastructure.csproj": {
               "projectPath": "C:\\Projects\\VoteEase\\VoteEase.Infrastructure\\VoteEase.Infrastructure.csproj"
+            },
+            "C:\\Projects\\VoteEase\\VoteEase.IoC\\VoteEase.IoC.csproj": {
+              "projectPath": "C:\\Projects\\VoteEase\\VoteEase.IoC\\VoteEase.IoC.csproj"
             }
           }
         }

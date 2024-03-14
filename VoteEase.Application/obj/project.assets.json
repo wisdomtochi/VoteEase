@@ -2102,6 +2102,19 @@
         "runtime": {
           "bin/placeholder/VoteEase.DTO.dll": {}
         }
+      },
+      "VoteEase.Mapper/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "VoteEase.DTO": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/VoteEase.Mapper.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/VoteEase.Mapper.dll": {}
+        }
       }
     }
   },
@@ -6364,6 +6377,11 @@
       "type": "project",
       "path": "../VoteEase.DTO/VoteEase.DTO.csproj",
       "msbuildProject": "../VoteEase.DTO/VoteEase.DTO.csproj"
+    },
+    "VoteEase.Mapper/1.0.0": {
+      "type": "project",
+      "path": "../VoteEase.Mapper/VoteEase.Mapper.csproj",
+      "msbuildProject": "../VoteEase.Mapper/VoteEase.Mapper.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6377,7 +6395,8 @@
       "SendGrid >= 9.29.2",
       "Serilog >= 2.12.0",
       "VG.Serilog.Sinks.EntityFrameworkCore >= 1.0.0",
-      "VoteEase.DTO >= 1.0.0"
+      "VoteEase.DTO >= 1.0.0",
+      "VoteEase.Mapper >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6409,6 +6428,9 @@
           "projectReferences": {
             "C:\\Projects\\VoteEase\\VoteEase.DTO\\VoteEase.DTO.csproj": {
               "projectPath": "C:\\Projects\\VoteEase\\VoteEase.DTO\\VoteEase.DTO.csproj"
+            },
+            "C:\\Projects\\VoteEase\\VoteEase.Mapper\\VoteEase.Mapper.csproj": {
+              "projectPath": "C:\\Projects\\VoteEase\\VoteEase.Mapper\\VoteEase.Mapper.csproj"
             }
           }
         }

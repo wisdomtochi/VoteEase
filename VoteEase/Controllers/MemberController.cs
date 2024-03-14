@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VoteEase.API.Helpers;
 using VoteEase.Application.Error;
+using VoteEase.Application.Helpers;
 using VoteEase.Application.Votings;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.WriteDTO;
@@ -20,6 +21,45 @@ namespace VoteEase.API.Controllers
             this.errorService = errorService;
         }
 
+        #region ADD MEMBERS FROM EXCEL DOCUMENT
+        [HttpPost]
+        [Route("add-new-members/from-excel-file")]
+        public async Task<IActionResult> AddNewMembersFromDoc([FromForm] ExcelSheetDTOw model)
+        {
+            try
+            {
+                ExcelReader excelReader = new ExcelReader(model.file);
+                var result = excelReader.ReadMembersFromExcel();
+
+                if (!result.Succeeded) return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    ErrorMessage = result.Message
+                });
+
+                var newMembers = await memberService.AddMembersFromExcel(result.ListOfEntities);
+
+                if (result.Succeeded) return Ok(new JsonMessage<string>()
+                {
+                    Status = true,
+                    SuccessMessage = newMembers.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    ErrorMessage = newMembers.Message
+                });
+            }
+            catch (Exception e)
+            {
+                errorService.LogError(e);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+        #endregion
+
+        #region CRUD
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetMembers()
@@ -63,33 +103,6 @@ namespace VoteEase.API.Controllers
                 {
                     Status = true,
                     Result = member.Entity
-                });
-            }
-            catch (Exception e)
-            {
-                errorService.LogError(e);
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet]
-        [Route("accredited-members")]
-        public async Task<IActionResult> GetAccreditedMembeers()
-        {
-            try
-            {
-                var members = await memberService.GetAllAccreditedMembers();
-                if (!members.Succeeded) return Ok(new JsonMessage<string>()
-                {
-                    Status = false,
-                    ErrorMessage = members.Message
-                });
-
-                return Ok(new JsonMessage<MemberDTO>()
-                {
-                    Status = members.Succeeded,
-                    Results = members.ListOfEntities,
-                    SuccessMessage = members.Message
                 });
             }
             catch (Exception e)
@@ -176,5 +189,7 @@ namespace VoteEase.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        #endregion
     }
 }

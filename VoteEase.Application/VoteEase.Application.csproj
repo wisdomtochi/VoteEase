@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VoteEase.DTO\VoteEase.DTO.csproj" />
+    <ProjectReference Include="..\VoteEase.Mapper\VoteEase.Mapper.csproj" />
   </ItemGroup>
 
 </Project>

@@ -41,7 +41,7 @@ namespace VoteEase.Infrastructure.Votings
                 if (group == null) return Map.GetModelResult<GroupDTO>(null, null, false, "Group Not Found");
 
                 var thisGroup = Map.Group(group);
-                return Map.GetModelResult<GroupDTO>(thisGroup, null, true, string.Empty);
+                return Map.GetModelResult(thisGroup, null, true, string.Empty);
             }
             catch (Exception ex)
             {
@@ -54,14 +54,14 @@ namespace VoteEase.Infrastructure.Votings
             try
             {
                 var thisGroup = await groupGenericRepository.ReadSingle(group.Id);
-                if (thisGroup != null) return Map.GetModelResult<string>(null, null, false, "Group Already Exists");
 
                 Group newGroup = new()
                 {
                     Id = group.Id,
                     Name = group.Name,
                     LeaderId = group.LeaderId,
-                    Leader = group.Leader
+                    Leader = group.Leader,
+                    DateAdded = DateTime.UtcNow
                 };
 
                 await groupGenericRepository.Create(newGroup);
@@ -86,7 +86,8 @@ namespace VoteEase.Infrastructure.Votings
                     Id = group.Id,
                     Name = group.Name,
                     LeaderId = group.LeaderId,
-                    Leader = group.Leader
+                    Leader = group.Leader,
+                    DateAdded = DateTime.UtcNow
                 };
 
                 groupGenericRepository.Update(updateGroup);

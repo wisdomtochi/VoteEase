@@ -1,4 +1,5 @@
-﻿using VoteEase.Domain.Entities.Auth;
+﻿using VoteEase.Domain.Entities;
+using VoteEase.Domain.Entities.Auth;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
@@ -32,8 +33,10 @@ namespace VoteEase.Mapper.Map
             {
                 Id = source.Id,
                 Name = source.Name,
-                PhoneNumber = source.PhoneNumber,
-                IsAccredited = source.IsAccredited
+                EmailAddress = source.EmailAddress,
+                DateCreated = source.DateCreated,
+                GroupId = source.GroupId,
+                GroupName = source.Group.Name
             };
 
             return member;
@@ -50,8 +53,44 @@ namespace VoteEase.Mapper.Map
             {
                 Id = x.Id,
                 Name = x.Name,
-                PhoneNumber = x.PhoneNumber,
-                IsAccredited = x.IsAccredited
+                EmailAddress = x.EmailAddress,
+                DateCreated = x.DateCreated,
+                GroupId = x.GroupId,
+                GroupName = x.Group.Name
+            }).ToList();
+
+            return members;
+        }
+        #endregion
+
+        #region Accredited Members Section
+        /// <summary>
+        /// Method to convert the Accredited Member entity to Accredited Member DTO
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static AccreditedMemberDTO AccreditedMember(AccreditedMember source)
+        {
+            AccreditedMemberDTO member = new()
+            {
+                MemberId = source.MemberId,
+                DateAdded = source.DateAdded
+            };
+
+            return member;
+        }
+
+        /// <summary>
+        /// Method to convert the List of Accredited Member entity to List of Accredited Member DTO
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static List<AccreditedMemberDTO> AccreditedMember(IEnumerable<AccreditedMember> source)
+        {
+            List<AccreditedMemberDTO> members = source.Select(x => new AccreditedMemberDTO
+            {
+                MemberId = x.MemberId,
+                DateAdded = x.DateAdded
             }).ToList();
 
             return members;
@@ -71,7 +110,8 @@ namespace VoteEase.Mapper.Map
                 Id = source.Id,
                 Name = source.Name,
                 LeaderId = source.LeaderId,
-                Leader = source.Leader
+                Leader = source.Leader,
+                DateAdded = source.DateAdded
             };
 
             return group;
@@ -89,7 +129,8 @@ namespace VoteEase.Mapper.Map
                 Id = x.Id,
                 Name = x.Name,
                 Leader = x.Leader,
-                LeaderId = x.LeaderId
+                LeaderId = x.LeaderId,
+                DateAdded = x.DateAdded
             }).ToList();
 
             return groups;
@@ -127,6 +168,7 @@ namespace VoteEase.Mapper.Map
                 Id = source.Id,
                 GroupId = source.GroupId,
                 Group = source.Group,
+                DateAdded = source.DateCreated,
                 Counsellors = source.Counsellors,
                 PeoplesWarden = source.PeoplesWarden
             };
@@ -146,6 +188,7 @@ namespace VoteEase.Mapper.Map
                 Id = x.Id,
                 GroupId = x.GroupId,
                 Group = x.Group,
+                DateAdded = x.DateCreated,
                 Counsellors = x.Counsellors,
                 PeoplesWarden = x.PeoplesWarden
             }).ToList();
@@ -167,6 +210,7 @@ namespace VoteEase.Mapper.Map
                 Id = source.Id,
                 GroupId = source.GroupId,
                 Group = source.Group,
+                DateCreated = source.DateCreated,
                 Counsellors = source.Counsellors,
                 PeoplesWarden = source.PeoplesWarden,
                 Delegates = source.Delegates
@@ -187,6 +231,7 @@ namespace VoteEase.Mapper.Map
                 Id = x.Id,
                 GroupId = x.GroupId,
                 Group = x.Group,
+                DateCreated = x.DateCreated,
                 Counsellors = x.Counsellors,
                 PeoplesWarden = x.PeoplesWarden,
                 Delegates = x.Delegates
@@ -209,6 +254,7 @@ namespace VoteEase.Mapper.Map
             {
                 Id = source.Id,
                 Member = source.Member,
+                DateCreated = source.DateCreated,
                 Counsellor = source.Counsellor,
                 PeoplesWarden = source.PeoplesWarden,
                 SynodDelegate = source.SynodDelegate
@@ -228,6 +274,7 @@ namespace VoteEase.Mapper.Map
             {
                 Id = x.Id,
                 Member = x.Member,
+                DateCreated = x.DateCreated,
                 Counsellor = x.Counsellor,
                 PeoplesWarden = x.PeoplesWarden,
                 SynodDelegate = x.SynodDelegate

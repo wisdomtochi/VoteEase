@@ -1,4 +1,5 @@
-﻿using VoteEase.Application.Votings;
+﻿using VoteEase.Application.Helpers;
+using VoteEase.Application.Votings;
 using VoteEase.Data_Access.Interface;
 using VoteEase.Domains.Entities;
 using VoteEase.DTO.ReadDTO;
@@ -16,24 +17,32 @@ namespace VoteEase.Infrastructure.Votings
             this.memberGenericRepository = memberGenericRepository;
         }
 
-        /// <summary>
-        /// Method to get all accredited members
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ModelResult<MemberDTO>> GetAllAccreditedMembers()
+        public async Task<ModelResult<string>> AddMembersFromExcel(List<MemberExcelSheet> model)
         {
-            try
-            {
-                var members = await memberGenericRepository.ReadAll();
+            if (model == null || model.Count is 0) return Map.GetModelResult<string>(null, null, false, "Model cannot be empty.");
 
-                var membersList = Map.Member(members).Where(x => x.IsAccredited.Equals(true)).ToList();
+            var members = await memberGenericRepository.ReadAll();
+            //List<Member> members = new();
 
-                return Map.GetModelResult(null, membersList, true, "All Accredited Members");
-            }
-            catch (Exception ex)
+            foreach (var item in model)
             {
-                throw new Exception(ex.Message);
+                Group memberGroup = (Group)members.Where(x => x.Group.Name == item.GroupName);
+
+                var member = new Member()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = item.Name,
+                    EmailAddress = item.EmailAddress,
+                    DateCreated = DateTime.UtcNow,
+                    Group = memberGroup,
+                    GroupId = memberGroup.Id
+                };
+
+                await memberGenericRepository.Create(member);
             }
+
+            await memberGenericRepository.SaveChanges();
+            return Map.GetModelResult<string>(null, null, true, "Members added successfully.");
         }
 
         #region crud
@@ -80,8 +89,10 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     Id = member.Id,
                     Name = member.Name,
-                    PhoneNumber = member.PhoneNumber,
-                    IsAccredited = member.IsAccredited
+                    EmailAddress = member.EmailAddress,
+                    DateCreated = DateTime.UtcNow,
+                    GroupId = member.GroupId,
+                    Group = member.Group
                 };
 
                 await memberGenericRepository.Create(newMember);
@@ -105,8 +116,10 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     Id = memberId,
                     Name = model.Name,
-                    PhoneNumber = model.PhoneNumber,
-                    IsAccredited = model.IsAccredited
+                    EmailAddress = model.EmailAddress,
+                    DateCreated = DateTime.UtcNow,
+                    GroupId = model.GroupId,
+                    Group = model.Group
                 };
 
                 memberGenericRepository.Update(newMember);
