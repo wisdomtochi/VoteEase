@@ -1,12 +1,16 @@
 ﻿using Hangfire;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VG.Serilog.Sinks.EntityFrameworkCore;
+using VoteEase.Application.Data;
 using VoteEase.Application.Error;
 using VoteEase.Application.Helpers;
 using VoteEase.Application.Votings;
 using VoteEase.Data.Context;
+using VoteEase.Data_Access.Implementation;
+using VoteEase.Data_Access.Interface;
 using VoteEase.Infrastructure.Error;
 using VoteEase.Infrastructure.Votings;
 
@@ -18,7 +22,7 @@ namespace VoteEase.IoC.Dependencies
         {
             var env = Environment.GetEnvironmentVariable(LookupKey.DotNetEnvironmentKey);
 
-            #region DB Connection
+            #region DB CONNECTION
             //VoteEase context
             try
             {
@@ -105,13 +109,16 @@ namespace VoteEase.IoC.Dependencies
             #endregion
 
             #region REGISTER SERVICES   
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IMemberService, MemberService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<INominationService, NominationService>();
+            services.AddScoped<IAccreditedMemberService, AccreditedMemberService>();
             services.AddScoped<IVoteService, VoteService>();
             services.AddScoped<IErrorService, ErrorService>();
             #endregion
 
+            #region REGISTER HANGFIRE
             //Add Hangfire Services
             services.AddHangfire(configuration => configuration
                                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -119,8 +126,21 @@ namespace VoteEase.IoC.Dependencies
                                 .UseRecommendedSerializerSettings()
                                 .UseSerilogLogProvider());
 
+
+
             services.AddHangfireServer();
 
+            //IBackgroundroundJob
+            #endregion
+
+            #region IDENTITY
+            services.AddIdentity<VoteEaseUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            }).AddEntityFrameworkStores<VoteEaseDbContext>();
+            #endregion
 
             return services;
         }

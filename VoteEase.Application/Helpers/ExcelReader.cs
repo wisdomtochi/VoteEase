@@ -55,7 +55,7 @@ namespace VoteEase.Application.Helpers
                     {
                         Name = dataTable.Rows[i][0].ToString(),
                         EmailAddress = dataTable.Rows[i][1].ToString(),
-                        IsAccredited = dataTable.Rows[1][2].GetType() == typeof(bool)
+                        GroupName = dataTable.Rows[i][2].ToString()
                     };
 
                     members.Add(member);

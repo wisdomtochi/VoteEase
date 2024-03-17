@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VoteEase.Domains.Entities
+namespace VoteEase.Domain.Entities.Core
 {
     public class Vote
     {

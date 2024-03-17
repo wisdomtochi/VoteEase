@@ -2,7 +2,7 @@
 using VoteEase.API.Helpers;
 using VoteEase.Application.Error;
 using VoteEase.Application.Votings;
-using VoteEase.Domains.Entities;
+using VoteEase.Domain.Entities.Core;
 using VoteEase.DTO.WriteDTO;
 
 namespace VoteEase.API.Controllers

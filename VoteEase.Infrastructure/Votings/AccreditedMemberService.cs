@@ -1,7 +1,6 @@
 ﻿using VoteEase.Application.Votings;
 using VoteEase.Data_Access.Interface;
-using VoteEase.Domain.Entities;
-using VoteEase.Domains.Entities;
+using VoteEase.Domain.Entities.Core;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 using VoteEase.Mapper.Map;
@@ -70,7 +69,7 @@ namespace VoteEase.Infrastructure.Votings
         }
 
         #region CRUD
-        public async Task<ModelResult<AccreditedMemberDTO>> ReadAll()
+        public async Task<ModelResult<AccreditedMemberDTO>> GetAccreditedMembers()
         {
             try
             {
@@ -86,7 +85,7 @@ namespace VoteEase.Infrastructure.Votings
             }
         }
 
-        public async Task<ModelResult<AccreditedMemberDTO>> ReadSingle(Guid memberId)
+        public async Task<ModelResult<AccreditedMemberDTO>> GetAccreditedMember(Guid memberId)
         {
             try
             {

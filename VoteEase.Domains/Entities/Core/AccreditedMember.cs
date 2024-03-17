@@ -1,4 +1,4 @@
-﻿namespace VoteEase.Domain.Entities
+﻿namespace VoteEase.Domain.Entities.Core
 {
     public class AccreditedMember
     {

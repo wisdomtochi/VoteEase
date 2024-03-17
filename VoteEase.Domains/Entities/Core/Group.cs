@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace VoteEase.Domains.Entities
+namespace VoteEase.Domain.Entities.Core
 {
     public class Group
     {

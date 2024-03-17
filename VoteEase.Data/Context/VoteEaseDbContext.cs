@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VoteEase.Domain.Entities;
 using VoteEase.Domain.Entities.Auth;
+using VoteEase.Domain.Entities.Core;
 using VoteEase.Domain.Entities.Errors;
-using VoteEase.Domains.Entities;
 
 namespace VoteEase.Data.Context
 {

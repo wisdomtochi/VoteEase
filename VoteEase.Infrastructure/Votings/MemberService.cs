@@ -1,7 +1,7 @@
 ﻿using VoteEase.Application.Helpers;
 using VoteEase.Application.Votings;
 using VoteEase.Data_Access.Interface;
-using VoteEase.Domains.Entities;
+using VoteEase.Domain.Entities.Core;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 using VoteEase.Mapper.Map;

@@ -1,4 +1,4 @@
-﻿using VoteEase.Domains.Entities;
+﻿using VoteEase.Domain.Entities.Core;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 

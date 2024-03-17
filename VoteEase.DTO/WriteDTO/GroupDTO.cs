@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using VoteEase.Domains.Entities;
+using VoteEase.Domain.Entities.Core;
 
 namespace VoteEase.DTO.WriteDTO
 {
