@@ -23,7 +23,7 @@ namespace VoteEase.API.Controllers
 
         #region ADD MEMBERS FROM EXCEL DOCUMENT
         [HttpPost]
-        [Route("add-new-members/from-excel-file")]
+        [Route("members/add-new-members/from-excel-file")]
         public async Task<IActionResult> AddNewMembersFromDoc([FromForm] ExcelSheetDTOw model)
         {
             try
@@ -61,8 +61,8 @@ namespace VoteEase.API.Controllers
 
         #region CRUD
         [HttpGet]
-        [Route("get-all")]
-        public async Task<IActionResult> GetMembers()
+        [Route("members/get-all")]
+        public async Task<IActionResult> GetAllMembers()
         {
             try
             {
@@ -87,7 +87,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-member/{memberId}")]
+        [Route("member/get/{memberId}")]
         public async Task<IActionResult> GetMember([FromRoute] Guid memberId)
         {
             try
@@ -113,8 +113,8 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("create-new-member")]
-        public async Task<IActionResult> AddNewMember([FromBody] Member member)
+        [Route("member/create")]
+        public async Task<IActionResult> CreateNewMember([FromBody] Member member)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("update-member/{memberId}")]
+        [Route("members/update/{memberId}")]
         public async Task<IActionResult> UpdateMember([FromBody] Member member, [FromRoute] Guid memberId)
         {
             try
@@ -165,7 +165,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("delete-member")]
+        [Route("members/delete/{memberId}")]
         public async Task<IActionResult> DeleteMember([FromRoute] Guid memberId)
         {
             try

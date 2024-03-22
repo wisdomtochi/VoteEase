@@ -32,7 +32,7 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     Id = Guid.NewGuid(),
                     Name = item.Name,
-                    EmailAddress = item.EmailAddress,
+                    PhoneNumber = item.PhoneNumber,
                     DateCreated = DateTime.UtcNow,
                     Group = memberGroup,
                     GroupId = memberGroup.Id
@@ -89,7 +89,7 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     Id = member.Id,
                     Name = member.Name,
-                    EmailAddress = member.EmailAddress,
+                    PhoneNumber = member.PhoneNumber,
                     DateCreated = DateTime.UtcNow,
                     GroupId = member.GroupId,
                     Group = member.Group
@@ -116,7 +116,7 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     Id = memberId,
                     Name = model.Name,
-                    EmailAddress = model.EmailAddress,
+                    PhoneNumber = model.PhoneNumber,
                     DateCreated = DateTime.UtcNow,
                     GroupId = model.GroupId,
                     Group = model.Group

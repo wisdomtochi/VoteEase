@@ -6,17 +6,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var configuration = builder.Configuration;
-builder.Services.RegisterServices(configuration);
 
 //builder.Services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 //builder.Services.AddControllers().AddNewtonsoftJson();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.RegisterServices(configuration);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var serviceProvider = scope.ServiceProvider;
+//    var recurringJobManager = serviceProvider.GetRequiredService<IRecurringJobManager>();
+//    recurringJobManager.AddOrUpdate("log-cleanup-job", () => serviceProvider.GetRequiredService<IErrorService>().CleanupLogs(), Cron.Monthly);
+//}
 
 
 // Configure the HTTP request pipeline.

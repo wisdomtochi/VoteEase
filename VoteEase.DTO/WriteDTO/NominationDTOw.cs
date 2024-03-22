@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using VoteEase.Domain.Entities.Core;
+using VoteEase.Domain.Enums;
 
 namespace VoteEase.DTO.WriteDTO
 {
@@ -12,12 +13,13 @@ namespace VoteEase.DTO.WriteDTO
         public Guid GroupId { get; set; }
         [JsonProperty("group")]
         public Group Group { get; set; }
+        [JsonProperty("category_name")]
+        public Category Category { get; set; }
+        [JsonProperty("member_id")]
+        public Guid MemberId { get; set; }
+        [JsonProperty("member")]
+        public Member Member { get; set; }
+        [JsonProperty("date_created")]
         public DateTime DateCreated { get; set; }
-        [JsonProperty("counsellors")]
-        public CounsellorCategory Counsellors { get; set; }
-        [JsonProperty("people's_warden")]
-        public PeoplesWardenCategory? PeoplesWarden { get; set; }
-        [JsonProperty("synod_delegates")]
-        public DelegatesCategory? Delegates { get; set; }
     }
 }

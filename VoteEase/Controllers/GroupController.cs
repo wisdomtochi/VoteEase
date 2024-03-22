@@ -21,8 +21,8 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-all")]
-        public async Task<IActionResult> GetGroups()
+        [Route("groups/get-all")]
+        public async Task<IActionResult> GetAllGroups()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-group/{groupId}")]
+        [Route("groups/get/{groupId}")]
         public async Task<IActionResult> GetGroup([FromRoute] Guid groupId)
         {
             try
@@ -73,8 +73,8 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("create-new-group")]
-        public async Task<IActionResult> AddNewGroup([FromBody] Group group)
+        [Route("groups/create-group")]
+        public async Task<IActionResult> CreateNewGroup([FromBody] Group group)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("update-group/{groupId}")]
+        [Route("groups/update/{groupId}")]
         public async Task<IActionResult> UpdateGroup([FromBody] Group group, [FromRoute] Guid groupId)
         {
             try
@@ -125,7 +125,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("delete-group")]
+        [Route("groups/delete/{groupId}")]
         public async Task<IActionResult> DeleteGroup([FromRoute] Guid groupId)
         {
             try

@@ -1,6 +1,4 @@
-﻿using Serilog;
-using Serilog.Events;
-using VG.Serilog.Sinks.EntityFrameworkCore;
+﻿using Serilog.Events;
 using VoteEase.Application.Error;
 using VoteEase.Data_Access.Interface;
 using VoteEase.Domain.Entities.Errors;
@@ -9,18 +7,11 @@ namespace VoteEase.Infrastructure.Error
 {
     public class ErrorService : IErrorService
     {
-        private readonly Serilog.Core.Logger logger;
         private readonly IGenericRepository<ErrorLog> errorGenericRepository;
 
-        public ErrorService(IGenericRepository<ErrorLog> errorGenericRepository,
-                            Func<LogDbContext> dbContext)
+        public ErrorService(IGenericRepository<ErrorLog> errorGenericRepository)
         {
-            errorGenericRepository = errorGenericRepository;
-
-            logger = new LoggerConfiguration()
-                .WriteTo.Logger(lc => lc
-                    .Filter.ByIncludingOnly(evt => evt.Level == LogEventLevel.Error)
-                    .WriteTo.EntityFrameworkSink(dbContext)).CreateLogger();
+            this.errorGenericRepository = errorGenericRepository;
         }
 
         public ErrorService()
@@ -29,7 +20,6 @@ namespace VoteEase.Infrastructure.Error
 
         public void LogError(Exception ex)
         {
-            logger.Error(ex, ex.Message);
             SaveError(ex, LogEventLevel.Error);
         }
 
@@ -37,6 +27,7 @@ namespace VoteEase.Infrastructure.Error
         {
             ErrorLog newError = new()
             {
+                Id = Guid.NewGuid(),
                 ErrorMessage = ex.Message,
                 Timestamp = DateTime.UtcNow,
                 SeverityLevel = logEventLevel.ToString()

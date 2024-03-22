@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using VoteEase.Domain.Enums;
 
 namespace VoteEase.Domain.Entities.Core
 {
@@ -7,11 +9,15 @@ namespace VoteEase.Domain.Entities.Core
         [Key]
         public Guid Id { get; set; }
         [Required]
-        public Member Member { get; set; }
-        public DateTime DateCreated { get; set; }
+        public Guid VoterId { get; set; }
+        [ForeignKey("VoterId")]
+        public Member Voter { get; set; }
         [Required]
-        public Member Counsellor { get; set; }
-        public Member PeoplesWarden { get; set; }
-        public Member SynodDelegate { get; set; }
+        public Guid MemberId { get; set; }
+        [ForeignKey("MemberId")]
+        public Member Member { get; set; }
+        [Required]
+        public Category Category { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

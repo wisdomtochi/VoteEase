@@ -44,7 +44,7 @@ namespace VoteEase.API.Controllers
 
         #region crud
         [HttpGet]
-        [Route("get-all")]
+        [Route("votes/get-all")]
         public async Task<IActionResult> GetAllVotes()
         {
             try
@@ -70,7 +70,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-vote/{voteId}")]
+        [Route("vote/get/{voteId}")]
         public async Task<IActionResult> GetVote([FromRoute] Guid voteId)
         {
             try
@@ -96,7 +96,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("add-new-vote")]
+        [Route("votes/vote")]
         public async Task<IActionResult> AddNewVote([FromBody] Vote vote)
         {
             try
@@ -122,7 +122,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("update-vote")]
+        [Route("votes/update-vote/{voteId}")]
         public async Task<IActionResult> UpdateVote([FromBody] Vote vote, [FromRoute] Guid voteId)
         {
             try
@@ -148,7 +148,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("delete-vote")]
+        [Route("votes/delete-vote/{voteId}")]
         public async Task<IActionResult> DeleteVote([FromRoute] Guid voteId)
         {
             try

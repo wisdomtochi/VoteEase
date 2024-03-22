@@ -1,5 +1,4 @@
-﻿using VoteEase.Domain.Entities.Auth;
-using VoteEase.Domain.Entities.Core;
+﻿using VoteEase.Domain.Entities.Core;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 
@@ -32,7 +31,7 @@ namespace VoteEase.Mapper.Map
             {
                 Id = source.Id,
                 Name = source.Name,
-                EmailAddress = source.EmailAddress,
+                PhoneNumber = source.PhoneNumber,
                 DateCreated = source.DateCreated,
                 GroupId = source.GroupId,
                 GroupName = source.Group.Name
@@ -52,7 +51,7 @@ namespace VoteEase.Mapper.Map
             {
                 Id = x.Id,
                 Name = x.Name,
-                EmailAddress = x.EmailAddress,
+                PhoneNumber = x.PhoneNumber,
                 DateCreated = x.DateCreated,
                 GroupId = x.GroupId,
                 GroupName = x.Group.Name
@@ -138,107 +137,46 @@ namespace VoteEase.Mapper.Map
 
         #region Nomination Section
         /// <summary>
-        /// method that gets only the nominations
+        /// Method to convert the Nomination entity to the Nomination DTO
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static List<NominationDTO> Nomination(IEnumerable<Nomination> source)
-        {
-            List<NominationDTO> nominations = source.Select(x => new NominationDTO()
-            {
-                Counsellors = x.Counsellors,
-                PeoplesWarden = x.PeoplesWarden,
-                Delegates = x.Delegates
-            }).ToList();
-
-            return nominations;
-        }
-
-        #region Nominations Without Synod Delegates
-        /// <summary>
-        /// method to get one person and his nominations without synod delegates
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static NominationWithoutDelegatesDTO PeoplesNominationWithoutDelegates(Nomination source)
-        {
-            NominationWithoutDelegatesDTO nomination = new()
-            {
-                Id = source.Id,
-                GroupId = source.GroupId,
-                Group = source.Group,
-                DateAdded = source.DateCreated,
-                Counsellors = source.Counsellors,
-                PeoplesWarden = source.PeoplesWarden
-            };
-
-            return nomination;
-        }
-
-        /// <summary>
-        /// method to get the people that nominated and their nominations without synod delegates
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static List<NominationWithoutDelegatesDTO> PeoplesNominationWithoutDelegates(IEnumerable<Nomination> source)
-        {
-            List<NominationWithoutDelegatesDTO> peoplesNominations = source.Select(x => new NominationWithoutDelegatesDTO()
-            {
-                Id = x.Id,
-                GroupId = x.GroupId,
-                Group = x.Group,
-                DateAdded = x.DateCreated,
-                Counsellors = x.Counsellors,
-                PeoplesWarden = x.PeoplesWarden
-            }).ToList();
-
-            return peoplesNominations;
-        }
-        #endregion
-
-        #region Nominations With Synod Delegates
-        /// <summary>
-        /// method to get one person and his nominations with synod delegates
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static NominationDTOw PeoplesNomination(Nomination source)
+        public static NominationDTOw Nomination(Nomination source)
         {
             NominationDTOw nomination = new()
             {
                 Id = source.Id,
                 GroupId = source.GroupId,
                 Group = source.Group,
-                DateCreated = source.DateCreated,
-                Counsellors = source.Counsellors,
-                PeoplesWarden = source.PeoplesWarden,
-                Delegates = source.Delegates
+                MemberId = source.MemberId,
+                Member = source.Member,
+                Category = source.Category,
+                DateCreated = source.DateCreated
             };
 
             return nomination;
         }
 
         /// <summary>
-        /// method to get the people that nominated and their nominations with synod delegates
+        /// Method to convert the list of Nomination entity to list of Nomination DTO
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static List<NominationDTOw> PeoplesNomination(IEnumerable<Nomination> source)
+        public static List<NominationDTOw> Nomination(IEnumerable<Nomination> source)
         {
             List<NominationDTOw> peoplesNominations = source.Select(x => new NominationDTOw()
             {
                 Id = x.Id,
                 GroupId = x.GroupId,
                 Group = x.Group,
-                DateCreated = x.DateCreated,
-                Counsellors = x.Counsellors,
-                PeoplesWarden = x.PeoplesWarden,
-                Delegates = x.Delegates
+                MemberId = x.MemberId,
+                Member = x.Member,
+                Category = x.Category,
+                DateCreated = x.DateCreated
             }).ToList();
 
             return peoplesNominations;
         }
-        #endregion
         #endregion
 
         #region Vote Section
@@ -252,11 +190,12 @@ namespace VoteEase.Mapper.Map
             VoteDTO vote = new()
             {
                 Id = source.Id,
+                VoterId = source.VoterId,
+                Voter = source.Voter,
+                MemberId = source.MemberId,
                 Member = source.Member,
-                DateCreated = source.DateCreated,
-                Counsellor = source.Counsellor,
-                PeoplesWarden = source.PeoplesWarden,
-                SynodDelegate = source.SynodDelegate
+                Category = source.Category,
+                DateCreated = source.DateCreated
             };
 
             return vote;
@@ -272,11 +211,12 @@ namespace VoteEase.Mapper.Map
             List<VoteDTO> votes = source.Select(x => new VoteDTO()
             {
                 Id = x.Id,
+                VoterId = x.VoterId,
+                Voter = x.Voter,
+                MemberId = x.MemberId,
                 Member = x.Member,
-                DateCreated = x.DateCreated,
-                Counsellor = x.Counsellor,
-                PeoplesWarden = x.PeoplesWarden,
-                SynodDelegate = x.SynodDelegate
+                Category = x.Category,
+                DateCreated = x.DateCreated
             }).ToList();
 
             return votes;
@@ -297,41 +237,6 @@ namespace VoteEase.Mapper.Map
             };
 
             return voteResult;
-        }
-        #endregion
-
-        #region Admin Section
-        /// <summary>
-        /// Method to convert the Vote entity to the Vote DTO
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static AdminDTOw Admin(Admin source)
-        {
-            AdminDTOw admin = new()
-            {
-                Id = source.Id,
-                Position = source.Position,
-                EmailAddress = source.EmailAddress
-            };
-            return admin;
-        }
-
-        /// <summary>
-        /// Method to convert the list of Vote entity to list of Vote DTO
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static List<AdminDTOw> Admin(IEnumerable<Admin> source)
-        {
-            List<AdminDTOw> adminList = source.Select(admin => new AdminDTOw()
-            {
-                Id = admin.Id,
-                Position = admin.Position,
-                EmailAddress = admin.EmailAddress
-            }).ToList();
-
-            return adminList;
         }
         #endregion
     }

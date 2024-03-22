@@ -54,7 +54,7 @@ namespace VoteEase.Application.Helpers
                     var member = new MemberExcelSheet()
                     {
                         Name = dataTable.Rows[i][0].ToString(),
-                        EmailAddress = dataTable.Rows[i][1].ToString(),
+                        PhoneNumber = dataTable.Rows[i][1].ToString(),
                         GroupName = dataTable.Rows[i][2].ToString()
                     };
 
@@ -74,7 +74,7 @@ namespace VoteEase.Application.Helpers
     public class MemberExcelSheet
     {
         public string Name { get; set; }
-        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
         public string GroupName { get; set; }
     }
 }

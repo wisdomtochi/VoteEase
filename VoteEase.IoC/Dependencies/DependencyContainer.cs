@@ -1,9 +1,7 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VG.Serilog.Sinks.EntityFrameworkCore;
 using VoteEase.Application.Data;
 using VoteEase.Application.Error;
 using VoteEase.Application.Helpers;
@@ -65,12 +63,12 @@ namespace VoteEase.IoC.Dependencies
 
             }
 
-            //Log Context
+            //Application context
             try
             {
                 if (env == "Production")
                 {
-                    services.AddDbContext<LogDbContext>(options =>
+                    services.AddDbContext<ApplicationDbContext>(options =>
                     {
                         options.UseMySql(connectionString: Environment.GetEnvironmentVariable("WebApiDatabase_Production"), serverVersion: ServerVersion.AutoDetect(Environment.GetEnvironmentVariable("WebApiDatabase_Production")), mySqlOptionsAction: sqlOptions =>
                         {
@@ -81,7 +79,7 @@ namespace VoteEase.IoC.Dependencies
                 }
                 else if (env == "Staging")
                 {
-                    services.AddDbContext<LogDbContext>(options =>
+                    services.AddDbContext<ApplicationDbContext>(options =>
                     {
                         options.UseMySql(connectionString: Environment.GetEnvironmentVariable("WebApiDatabase_Staging"), serverVersion: ServerVersion.AutoDetect(Environment.GetEnvironmentVariable("WebApiDatabase_Staging")), mySqlOptionsAction: sqlOptions =>
                         {
@@ -92,7 +90,7 @@ namespace VoteEase.IoC.Dependencies
                 }
                 else if (env == "Development")
                 {
-                    services.AddDbContext<LogDbContext>(options =>
+                    services.AddDbContext<ApplicationDbContext>(options =>
                     {
                         options.UseMySql(connectionString: configuration.GetConnectionString("WebApiDatabase_Development"), serverVersion: ServerVersion.AutoDetect(configuration.GetConnectionString("WebApiDatabase_Development")), mySqlOptionsAction: sqlOptions =>
                         {
@@ -115,23 +113,21 @@ namespace VoteEase.IoC.Dependencies
             services.AddScoped<INominationService, NominationService>();
             services.AddScoped<IAccreditedMemberService, AccreditedMemberService>();
             services.AddScoped<IVoteService, VoteService>();
-            services.AddScoped<IErrorService, ErrorService>();
+            services.AddTransient<IErrorService, ErrorService>();
             #endregion
 
-            #region REGISTER HANGFIRE
-            //Add Hangfire Services
-            services.AddHangfire(configuration => configuration
-                                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                                .UseSimpleAssemblyNameTypeSerializer()
-                                .UseRecommendedSerializerSettings()
-                                .UseSerilogLogProvider());
+            //#region REGISTER HANGFIRE
+            ////Add Hangfire Services
+            //services.AddHangfire(configuration => configuration
+            //                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            //                    .UseSimpleAssemblyNameTypeSerializer()
+            //                    .UseRecommendedSerializerSettings()
+            //                    .UseSerilogLogProvider());
 
 
 
-            services.AddHangfireServer();
-
-            //IBackgroundroundJob
-            #endregion
+            //services.AddHangfireServer();
+            //#endregion
 
             #region IDENTITY
             services.AddIdentity<VoteEaseUser, IdentityRole>(options =>
@@ -139,7 +135,7 @@ namespace VoteEase.IoC.Dependencies
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Lockout.MaxFailedAccessAttempts = 3;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            }).AddEntityFrameworkStores<VoteEaseDbContext>();
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
             #endregion
 
             return services;

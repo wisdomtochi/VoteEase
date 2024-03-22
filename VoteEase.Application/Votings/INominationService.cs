@@ -6,10 +6,6 @@ namespace VoteEase.Application.Votings
 {
     public interface INominationService
     {
-        Task<ModelResult<NominationDTO>> GetNominatedPersons();
-        Task<ModelResult<NominationWithoutDelegatesDTO>> GetNominationsWithoutDelegates();
-        Task<ModelResult<NominationWithoutDelegatesDTO>> GetSpecificNominationWithoutDelegate(Guid nominationId);
-
         #region crud
         Task<ModelResult<NominationDTOw>> GetNomination(Guid nominationId);
         Task<ModelResult<NominationDTOw>> GetAllNominations();

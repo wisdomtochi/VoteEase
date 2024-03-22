@@ -11,7 +11,7 @@ namespace VoteEase.Domain.Entities.Core
         [MaxLength(100)]
         public string Name { get; set; }
         [Required]
-        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime DateCreated { get; set; }
         public Guid GroupId { get; set; }
         [ForeignKey("GroupId")]

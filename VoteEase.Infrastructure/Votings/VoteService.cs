@@ -1,6 +1,7 @@
 ﻿using VoteEase.Application.Votings;
 using VoteEase.Data_Access.Interface;
 using VoteEase.Domain.Entities.Core;
+using VoteEase.Domain.Enums;
 using VoteEase.DTO.ReadDTO;
 using VoteEase.DTO.WriteDTO;
 using VoteEase.Mapper.Map;
@@ -30,12 +31,11 @@ namespace VoteEase.Infrastructure.Votings
                 //if (!allVotes.Any()) return Map.GetModelResult<string>(null, null, false, "No vote found");
 
                 var counsellorVotes = allVotes
-                                .Where(vote => vote.Counsellor != null)
-                                .GroupBy(vote => vote.Counsellor)
+                                .GroupBy(vote => vote.Category == Category.Counsellor)
                                 .Select(group => new
                                 {
                                     Category = group.Key,
-                                    Members = group.GroupBy(vote => vote.Counsellor.Name)
+                                    Members = group.GroupBy(vote => vote.MemberId)
                                                     .Select(x => new
                                                     {
                                                         MemberName = x.Key,
@@ -44,12 +44,11 @@ namespace VoteEase.Infrastructure.Votings
                                 });
 
                 var peoplesWardenVotes = allVotes
-                                .Where(vote => vote.PeoplesWarden != null)
-                                .GroupBy(vote => vote.PeoplesWarden)
+                                .GroupBy(vote => vote.Category == Category.PeopleWarden)
                                 .Select(group => new
                                 {
                                     Category = group.Key,
-                                    Members = group.GroupBy(vote => vote.PeoplesWarden.Name)
+                                    Members = group.GroupBy(vote => vote.MemberId)
                                                     .Select(x => new
                                                     {
                                                         MemberName = x.Key,
@@ -58,12 +57,11 @@ namespace VoteEase.Infrastructure.Votings
                                 });
 
                 var synodDelegateVotes = allVotes
-                                .Where(vote => vote.SynodDelegate != null)
-                                .GroupBy(vote => vote.SynodDelegate)
+                                .GroupBy(vote => vote.Category == Category.SynodDelegate)
                                 .Select(group => new
                                 {
                                     Category = group.Key,
-                                    Members = group.GroupBy(vote => vote.SynodDelegate.Name)
+                                    Members = group.GroupBy(vote => vote.MemberId)
                                                     .Select(x => new
                                                     {
                                                         MemberName = x.Key,
@@ -134,94 +132,22 @@ namespace VoteEase.Infrastructure.Votings
                 Vote newVote = new()
                 {
                     Id = vote.Id,
+                    VoterId = vote.VoterId,
+                    Voter = vote.Voter,
+                    MemberId = vote.MemberId,
                     Member = vote.Member,
-                    Counsellor = vote.Counsellor,
-                    PeoplesWarden = vote.PeoplesWarden,
-                    SynodDelegate = vote.SynodDelegate
+                    Category = vote.Category,
+                    DateCreated = vote.DateCreated
                 };
 
                 //checking if the member is accredited
-                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newVote.Member.Id);
+                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newVote.MemberId);
                 if (memberIsAccredited == null) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. You are unaccredited.");
 
-                //iterating through the nominations in the database
-                foreach (var nomination in nominations)
-                {
-                    //checking if the new vote counsellor matches any of the counsellor in the the current iterated nomination entity
-                    if (newVote.Counsellor == nomination.Counsellors.CounsellorOne || newVote.Counsellor == nomination.Counsellors.CounsellorTwo
-                                || newVote.Counsellor == nomination.Counsellors.CounsellorThree)
-                    {
-                        // Checking if the people's warden section of the current iterated nomination entity and the new vote are not null
-                        if (nomination.PeoplesWarden.PeoplesWarden != null && newVote.PeoplesWarden != null)
-                        {
-                            //checking if the new vote people's warden matches the people's warden in the current iterated nomination entity
-                            //before creating the new vote to the database
-                            if (newVote.PeoplesWarden == nomination.PeoplesWarden.PeoplesWarden)
-                            {
-                                // Checking if the synod delegates section of the current iterated nomination entity and the new vote are not null
-                                if (nomination.Delegates.Delegate != null && newVote.SynodDelegate != null)
-                                {
-                                    //checking if the new vote synod delegate matches the synod delegate in the current iterated nomination entity
-                                    //before creating the new vote to the database
-                                    if (newVote.SynodDelegate == nomination.Delegates.Delegate)
-                                    {
-                                        await voteGenericRepository.Create(newVote);
-                                        await voteGenericRepository.SaveChanges();
-                                        return Map.GetModelResult<string>(null, null, true, "Vote Added");
-                                    }
-                                    // if they don't match, I am returning an unsuccessful vote with a detailed explanation
-                                    else
-                                    {
-                                        return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.SynodDelegate + "was not nominated");
-                                    }
-                                }
-                                //checking if the new vote synod delegate is null. If null, then the app is creating the vote with the synod delegate field to be empty,
-                                //because the user did not enter anything in it.
-                                else if (newVote.SynodDelegate == null)
-                                {
-                                    await voteGenericRepository.Create(newVote);
-                                    await voteGenericRepository.SaveChanges();
-                                    return Map.GetModelResult<string>(null, null, true, "Vote Added");
-                                }
-                            }
-                            //if they don't match, I am returning an unsuccessful vote with a detailed explanation
-                            else
-                            {
-                                return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.PeoplesWarden + "was not nominated");
-                            }
-                        }
-                        //checking if the people's warden field of the new vote is empty, so the app can create the new vote
-                        else if (newVote.PeoplesWarden == null)
-                        {
-                            // Checking if the synod delegates section of the current iterated nomination entity and the new vote are not null
-                            if (nomination.Delegates.Delegate != null && newVote.SynodDelegate != null)
-                            {
-                                //checking if the new vote synod delegate matches the synod delegate in the current iterated nomination entity
-                                //before creating the new vote to the database
-                                if (newVote.SynodDelegate == nomination.Delegates.Delegate)
-                                {
-                                    await voteGenericRepository.Create(newVote);
-                                    await voteGenericRepository.SaveChanges();
-                                    return Map.GetModelResult<string>(null, null, true, "Vote Added");
-                                }
-                                // if they don't match, I am returning an unsuccessful vote with a detailed explanation
-                                else
-                                {
-                                    return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.SynodDelegate + "was not nominated");
-                                }
-                            }
-                            //checking if the new vote synod delegate is null. If null, then the app is creating the vote with the synod delegate field to be empty,
-                            //because the user did not enter anything in it.
-                            else if (newVote.SynodDelegate == null)
-                            {
-                                await voteGenericRepository.Create(newVote);
-                                await voteGenericRepository.SaveChanges();
-                                return Map.GetModelResult<string>(null, null, true, "Vote Added");
-                            }
-                        }
-                    }
-                }
-                return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.Counsellor + "was not nominated");
+                await voteGenericRepository.Create(newVote);
+                await voteGenericRepository.SaveChanges();
+
+                return Map.GetModelResult<string>(null, null, true, "Vote Successful.");
             }
             catch (Exception ex)
             {
@@ -240,94 +166,21 @@ namespace VoteEase.Infrastructure.Votings
                 Vote newVote = new()
                 {
                     Id = vote.Id,
+                    VoterId = vote.VoterId,
+                    Voter = vote.Voter,
+                    MemberId = vote.MemberId,
                     Member = vote.Member,
-                    Counsellor = vote.Counsellor,
-                    PeoplesWarden = vote.PeoplesWarden,
-                    SynodDelegate = vote.SynodDelegate
+                    Category = vote.Category,
+                    DateCreated = vote.DateCreated
                 };
 
                 //checking if the member is accredited
-                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newVote.Member.Id);
+                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newVote.MemberId);
                 if (memberIsAccredited == null) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. You are unaccredited.");
 
-                //iterating through the nominations in the databasereturn Map.GetModelResult<string>(null, null, true, "Vote Updated");
-                foreach (var nomination in nominations)
-                {
-                    //checking if the new vote counsellor matches any of the counsellor in the the current iterated nomination entity
-                    if (newVote.Counsellor == nomination.Counsellors.CounsellorOne || newVote.Counsellor == nomination.Counsellors.CounsellorTwo
-                                || newVote.Counsellor == nomination.Counsellors.CounsellorThree)
-                    {
-                        // Checking if the people's warden section of the current iterated nomination entity and the new vote are not null
-                        if (nomination.PeoplesWarden.PeoplesWarden != null && newVote.PeoplesWarden != null)
-                        {
-                            //checking if the new vote people's warden matches the people's warden in the current iterated nomination entity
-                            //before creating the new vote to the database
-                            if (newVote.PeoplesWarden == nomination.PeoplesWarden.PeoplesWarden)
-                            {
-                                // Checking if the synod delegates section of the current iterated nomination entity and the new vote are not null
-                                if (nomination.Delegates.Delegate != null && newVote.SynodDelegate != null)
-                                {
-                                    //checking if the new vote synod delegate matches the synod delegate in the current iterated nomination entity
-                                    //before creating the new vote to the database
-                                    if (newVote.SynodDelegate == nomination.Delegates.Delegate)
-                                    {
-                                        await voteGenericRepository.Create(newVote);
-                                        await voteGenericRepository.SaveChanges();
-                                        return Map.GetModelResult<string>(null, null, true, "Vote Updated");
-                                    }
-                                    // if they don't match, I am returning an unsuccessful vote with a detailed explanation
-                                    else
-                                    {
-                                        return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.SynodDelegate + "was not nominated");
-                                    }
-                                }
-                                //checking if the new vote synod delegate is null. If null, then the app is creating the vote with the synod delegate field to be empty,
-                                //because the user did not enter anything in it.
-                                else if (newVote.SynodDelegate == null)
-                                {
-                                    await voteGenericRepository.Create(newVote);
-                                    await voteGenericRepository.SaveChanges();
-                                    return Map.GetModelResult<string>(null, null, true, "Vote Updated");
-                                }
-                            }
-                            //if they don't match, I am returning an unsuccessful vote with a detailed explanation
-                            else
-                            {
-                                return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.PeoplesWarden + "was not nominated");
-                            }
-                        }
-                        //checking if the people's warden field of the new vote is empty, so the app can create the new vote
-                        else if (newVote.PeoplesWarden == null)
-                        {
-                            // Checking if the synod delegates section of the current iterated nomination entity and the new vote are not null
-                            if (nomination.Delegates.Delegate != null && newVote.SynodDelegate != null)
-                            {
-                                //checking if the new vote synod delegate matches the synod delegate in the current iterated nomination entity
-                                //before creating the new vote to the database
-                                if (newVote.SynodDelegate == nomination.Delegates.Delegate)
-                                {
-                                    await voteGenericRepository.Create(newVote);
-                                    await voteGenericRepository.SaveChanges();
-                                    return Map.GetModelResult<string>(null, null, true, "Vote Updated");
-                                }
-                                // if they don't match, I am returning an unsuccessful vote with a detailed explanation
-                                else
-                                {
-                                    return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.SynodDelegate + "was not nominated");
-                                }
-                            }
-                            //checking if the new vote synod delegate is null. If null, then the app is creating the vote with the synod delegate field to be empty,
-                            //because the user did not enter anything in it.
-                            else if (newVote.SynodDelegate == null)
-                            {
-                                await voteGenericRepository.Create(newVote);
-                                await voteGenericRepository.SaveChanges();
-                                return Map.GetModelResult<string>(null, null, true, "Vote Updated");
-                            }
-                        }
-                    }
-                }
-                return Map.GetModelResult<string>(null, null, false, "Vote Unseccessful. The " + newVote.Counsellor + "was not nominated");
+                voteGenericRepository.Update(newVote);
+                await voteGenericRepository.SaveChanges();
+                return Map.GetModelResult<string>(null, null, false, "Vote Successful.");
             }
             catch (Exception ex)
             {

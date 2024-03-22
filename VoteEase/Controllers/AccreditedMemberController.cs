@@ -22,7 +22,7 @@ namespace VoteEase.API.Controllers
 
         #region ADD LIST OF ACCREDITED MEMBERS
         [HttpPost]
-        [Route("add-new-members")]
+        [Route("accredited-members/add-multiple-members")]
         public async Task<IActionResult> AddListOfNewAccreditedMember([FromBody] List<AccreditedMember> model)
         {
             try
@@ -49,7 +49,9 @@ namespace VoteEase.API.Controllers
         #endregion
 
         #region DELETE LIST OF ACCREDITED MEMBERS
-        public async Task<IActionResult> DeleteListOfAccreditedMembers(List<AccreditedMember> model)
+        [HttpPost]
+        [Route("accredited-members/delete-multiple-members")]
+        public async Task<IActionResult> DeleteListOfAccreditedMembers([FromBody] List<AccreditedMember> model)
         {
             try
             {
@@ -76,7 +78,7 @@ namespace VoteEase.API.Controllers
 
         #region CRUD
         [HttpGet]
-        [Route("get-all")]
+        [Route("accredited-members/get-all")]
         public async Task<IActionResult> GetAllAccreditedMembers()
         {
             try
@@ -102,7 +104,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-member/{memberId}")]
+        [Route("accredited-members/get/{memberId}")]
         public async Task<IActionResult> GetAccreditedMember([FromRoute] Guid memberId)
         {
             try
@@ -128,7 +130,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("add-membeer")]
+        [Route("accredited-members/add-member")]
         public async Task<IActionResult> AddNewAccreditedMember([FromBody] AccreditedMember model)
         {
             try
@@ -154,7 +156,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("update-member/{memberId}")]
+        [Route("accredited-members/update/{memberId}")]
         public async Task<IActionResult> UpdateAccreditedMember([FromBody] AccreditedMember model, [FromRoute] Guid memberId)
         {
             try
@@ -180,7 +182,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpPost]
-        [Route("delete-member/{memberId}")]
+        [Route("accredited-members/delete/{memberId}")]
         public async Task<IActionResult> DeleteAccreditedMember([FromRoute] Guid memberId)
         {
             try
