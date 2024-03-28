@@ -23,4 +23,8 @@
     <ProjectReference Include="..\VoteEase.Mapper\VoteEase.Mapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

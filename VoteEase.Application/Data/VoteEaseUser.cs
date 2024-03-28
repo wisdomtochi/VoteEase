@@ -5,9 +5,12 @@ namespace VoteEase.Application.Data
 {
     public class VoteEaseUser : IdentityUser
     {
-        [Required]
+        [Key]
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string PhoneNumber { get; set; }
-        [Required]
         public string PassCode { get; set; }
+        public DateTime DateJoined { get; set; }
     }
 }
