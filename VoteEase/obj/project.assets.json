@@ -2278,6 +2278,7 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "Hangfire": "1.8.11",
+          "Microsoft.EntityFrameworkCore": "6.0.6",
           "Serilog": "2.12.0",
           "VG.Serilog.Sinks.EntityFrameworkCore": "1.0.0",
           "VoteEase.Application": "1.0.0",

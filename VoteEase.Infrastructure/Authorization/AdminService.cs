@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using VoteEase.Application.Authorization;
 using VoteEase.Application.Data;
 using VoteEase.DTO.ReadDTO;
+using VoteEase.Mapper.Map;
 
 namespace VoteEase.Infrastructure.Authorization
 {
@@ -140,22 +142,44 @@ namespace VoteEase.Infrastructure.Authorization
             return (false, "Failed to delete role.");
         }
 
-        public async Task<(bool status, string message)> AddToRole(string user, string roleName)
+        public async Task<List<VoteEaseUser>> GetAllUsers()
         {
-            VoteEaseUser voteEaseUser = await userManager.FindByIdAsync(user);
-
-            if (voteEaseUser == null) return (false, "User Not Found.");
-
-            IdentityRole verifyRole = await roleManager.FindByIdAsync(roleName);
-
-            if (verifyRole == null) return (false, "Role Not Found.");
-
-            await userManager.AddToRoleAsync(voteEaseUser, roleName);
-
-            return (true, "User Added to Role.");
+            try
+            {
+                var users = await userManager.Users.ToListAsync();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        public async Task<(bool status, string message)> AddUsersToRole(List<string> users, List<string> roleNames)
+        public async Task<ModelResult<VoteEaseUser>> CreateAppUser(string firstName, string lastName, string passCode)
+        {
+            try
+            {
+                VoteEaseUser newUser = new()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    PassCode = passCode,
+                    DateJoined = DateTime.UtcNow
+                };
+
+                IdentityResult result = await userManager.CreateAsync(newUser);
+
+                if (!result.Succeeded) return Map.GetModelResult<VoteEaseUser>(null, null, false, "User Failed To Create.");
+
+                return Map.GetModelResult(newUser, null, true, "User Created.");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<(bool status, string message)> AddToRole(List<string> users, List<string> roleNames)
         {
             List<VoteEaseUser> voteEaseUsers = new();
 
@@ -198,31 +222,7 @@ namespace VoteEase.Infrastructure.Authorization
             return (false, $"{voteEaseUser.FirstName} {voteEaseUser.LastName} is not in {roleName}.");
         }
 
-        public async Task<VoteEaseUser> CreateAppUser(string firstName, string lastName, string passCode)
-        {
-            try
-            {
-                VoteEaseUser newUser = new()
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    PassCode = passCode,
-                    DateJoined = DateTime.UtcNow
-                };
-
-                IdentityResult result = await userManager.CreateAsync(newUser);
-
-                if (!result.Succeeded) return null;
-
-                return newUser;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        public async Task<(bool status, string message)> RemoveAppUser(string userId, string roleName)
+        public async Task<(bool status, string message)> RemoveFromRole(string userId, string roleName)
         {
             try
             {
@@ -241,6 +241,32 @@ namespace VoteEase.Infrastructure.Authorization
                 if (result.Succeeded) return (true, "User Removed From Role Successfully.");
 
                 return (false, "Failed to remove user.");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public int CountUsers()
+        {
+            try
+            {
+                return userManager.Users.Count();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> CountUsersInRole(string roleName)
+        {
+            try
+            {
+                IList<VoteEaseUser> users = await userManager.GetUsersInRoleAsync(roleName);
+
+                return users.Count;
             }
             catch (Exception ex)
             {

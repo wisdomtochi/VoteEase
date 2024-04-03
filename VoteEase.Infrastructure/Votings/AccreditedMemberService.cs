@@ -30,6 +30,11 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     var newMembers = checkMembers.Where(m => m.Equals(member));
 
+                    foreach (var newMember in newMembers)
+                    {
+                        if (newMember.Group == null) return Map.GetModelResult<string>(null, null, false, "Member Must Have A Group.");
+                    }
+
                     accreditedMemberGenericRepository.AddRange((IEnumerable<AccreditedMember>)newMembers);
                     await accreditedMemberGenericRepository.SaveChanges();
                     return Map.GetModelResult<string>(null, null, true, "Members Added Successfully.");
@@ -105,9 +110,11 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                var checkIfMemberIsInMembersTable = await memberGenericRepository.ReadSingle(member.MemberId);
+                Member checkMember = await memberGenericRepository.ReadSingle(member.MemberId);
 
-                if (checkIfMemberIsInMembersTable == null) return Map.GetModelResult<string>(null, null, false, "Member Does Not Exist.");
+                if (checkMember == null) return Map.GetModelResult<string>(null, null, false, "Member Does Not Exist.");
+
+                if (checkMember.Group == null) return Map.GetModelResult<string>(null, null, false, "Member Must Have A Group.");
 
                 AccreditedMember accreditedMember = new()
                 {

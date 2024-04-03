@@ -33,8 +33,7 @@ namespace VoteEase.Mapper.Map
                 Name = source.Name,
                 PhoneNumber = source.PhoneNumber,
                 DateCreated = source.DateCreated,
-                GroupId = source.GroupId,
-                GroupName = source.Group.Name
+                Group = source.Group
             };
 
             return member;
@@ -53,8 +52,7 @@ namespace VoteEase.Mapper.Map
                 Name = x.Name,
                 PhoneNumber = x.PhoneNumber,
                 DateCreated = x.DateCreated,
-                GroupId = x.GroupId,
-                GroupName = x.Group.Name
+                Group = x.Group
             }).ToList();
 
             return members;
@@ -237,6 +235,44 @@ namespace VoteEase.Mapper.Map
             };
 
             return voteResult;
+        }
+        #endregion
+
+        #region Member's Group Section
+        /// <summary>
+        /// Method to convert the MemberInGroup entity to the MemberInGroup DTO
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static MemberInGroupDTOw MemberInGroup(MemberInGroup source)
+        {
+            MemberInGroupDTOw memberGroup = new()
+            {
+                MemberId = source.MemberId,
+                Member = source.Member,
+                GroupId = source.GroupId,
+                Group = source.Group
+            };
+
+            return memberGroup;
+        }
+
+        /// <summary>
+        /// Method to convert the List of MemberInGroup entity to List of the MemberInGroup DTO
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static List<MemberInGroupDTOw> MemberInGroup(IEnumerable<MemberInGroup> source)
+        {
+            List<MemberInGroupDTOw> members = source.Select(x => new MemberInGroupDTOw()
+            {
+                MemberId = x.MemberId,
+                Member = x.Member,
+                GroupId = x.GroupId,
+                Group = x.Group
+            }).ToList();
+
+            return members;
         }
         #endregion
     }

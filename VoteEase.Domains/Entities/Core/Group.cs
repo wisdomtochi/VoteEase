@@ -10,7 +10,6 @@ namespace VoteEase.Domain.Entities.Core
         [Required]
         public string Name { get; set; }
         public Guid LeaderId { get; set; }
-        [Required]
         [ForeignKey("LeaderId")]
         public Member Leader { get; set; }
         public DateTime DateAdded { get; set; }

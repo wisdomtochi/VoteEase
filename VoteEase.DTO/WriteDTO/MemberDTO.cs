@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using VoteEase.Domain.Entities.Core;
 
 namespace VoteEase.DTO.WriteDTO
 {
@@ -15,8 +16,8 @@ namespace VoteEase.DTO.WriteDTO
         public Guid GroupId { get; set; }
         [JsonProperty("date_created")]
         public DateTime DateCreated { get; set; }
-        [JsonProperty("group_name")]
+        [JsonProperty("group")]
         [JsonIgnore]
-        public string GroupName { get; set; }
+        public Group Group { get; set; }
     }
 }

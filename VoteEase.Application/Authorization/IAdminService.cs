@@ -13,10 +13,12 @@ namespace VoteEase.Application.Authorization
         Task<(bool status, string message)> UpdateRole(string roleId, string roleName);
         Task<(bool status, string message)> DeleteRoleById(string roleId);
         Task<(bool status, string message)> DeleteRoleByName(string roleName);
-        Task<(bool status, string message)> AddToRole(string user, string roleName);
-        Task<(bool status, string message)> AddUsersToRole(List<string> users, List<string> roleNames);
+        Task<(bool status, string message)> AddToRole(List<string> users, List<string> roleNames);
+        Task<(bool status, string message)> RemoveFromRole(string userId, string roleName);
         Task<(bool status, string message)> IsUserInRole(string userId, string roleName);
-        Task<VoteEaseUser> CreateAppUser(string firstName, string lastName, string passCode);
-        Task<(bool status, string message)> RemoveAppUser(string userId, string roleName);
+        Task<ModelResult<VoteEaseUser>> CreateAppUser(string firstName, string lastName, string passCode);
+        int CountUsers();
+        Task<List<VoteEaseUser>> GetAllUsers();
+        Task<int> CountUsersInRole(string roleName);
     }
 }

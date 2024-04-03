@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VoteEase.Data.Context;
 
@@ -10,9 +11,10 @@ using VoteEase.Data.Context;
 namespace VoteEase.Data.Migrations
 {
     [DbContext(typeof(VoteEaseDbContext))]
-    partial class VoteEaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240328230857_AddingMemberPasscode")]
+    partial class AddingMemberPasscode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,8 +53,7 @@ namespace VoteEase.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeaderId")
-                        .IsUnique();
+                    b.HasIndex("LeaderId");
 
                     b.ToTable("Groups");
                 });
@@ -66,6 +67,9 @@ namespace VoteEase.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -77,22 +81,9 @@ namespace VoteEase.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members");
-                });
-
-            modelBuilder.Entity("VoteEase.Domain.Entities.Core.MemberInGroup", b =>
-                {
-                    b.Property<Guid>("MemberId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("MemberId", "GroupId");
-
                     b.HasIndex("GroupId");
 
-                    b.ToTable("MembersInGroups");
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("VoteEase.Domain.Entities.Core.MemberPasscode", b =>
@@ -193,15 +184,15 @@ namespace VoteEase.Data.Migrations
             modelBuilder.Entity("VoteEase.Domain.Entities.Core.Group", b =>
                 {
                     b.HasOne("VoteEase.Domain.Entities.Core.Member", "Leader")
-                        .WithOne("Group")
-                        .HasForeignKey("VoteEase.Domain.Entities.Core.Group", "LeaderId")
+                        .WithMany()
+                        .HasForeignKey("LeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Leader");
                 });
 
-            modelBuilder.Entity("VoteEase.Domain.Entities.Core.MemberInGroup", b =>
+            modelBuilder.Entity("VoteEase.Domain.Entities.Core.Member", b =>
                 {
                     b.HasOne("VoteEase.Domain.Entities.Core.Group", "Group")
                         .WithMany()
@@ -209,15 +200,7 @@ namespace VoteEase.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VoteEase.Domain.Entities.Core.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Group");
-
-                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("VoteEase.Domain.Entities.Core.Nomination", b =>
@@ -256,11 +239,6 @@ namespace VoteEase.Data.Migrations
                     b.Navigation("Member");
 
                     b.Navigation("Voter");
-                });
-
-            modelBuilder.Entity("VoteEase.Domain.Entities.Core.Member", b =>
-                {
-                    b.Navigation("Group");
                 });
 #pragma warning restore 612, 618
         }

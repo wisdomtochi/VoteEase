@@ -61,7 +61,7 @@ namespace VoteEase.Infrastructure.Votings
 
                 Nomination newNomination = new()
                 {
-                    Id = nomination.Id,
+                    Id = Guid.NewGuid(),
                     GroupId = nomination.GroupId,
                     Group = nomination.Group,
                     MemberId = nomination.MemberId,
@@ -73,7 +73,7 @@ namespace VoteEase.Infrastructure.Votings
                 var member = await memberGenericRepository.ReadSingle(newNomination.MemberId);
                 if (member == null) return Map.GetModelResult<string>(null, null, false, "Member cannot be found.");
 
-                if (!newNomination.GroupId.Equals(member.GroupId)) return Map.GetModelResult<string>(null, null, false, "Nominate members from only your group.");
+                if (!newNomination.GroupId.Equals(member.Group.Id)) return Map.GetModelResult<string>(null, null, false, "Nominate members from only your group.");
 
 
                 await nominationGenericRepository.Create(newNomination);
@@ -99,7 +99,7 @@ namespace VoteEase.Infrastructure.Votings
 
                 Nomination newNomination = new()
                 {
-                    Id = nomination.Id,
+                    Id = Guid.NewGuid(),
                     GroupId = nomination.GroupId,
                     Group = nomination.Group,
                     MemberId = nomination.MemberId,

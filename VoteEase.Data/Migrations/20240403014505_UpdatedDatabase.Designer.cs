@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VoteEase.Data.Context;
 
@@ -10,9 +11,10 @@ using VoteEase.Data.Context;
 namespace VoteEase.Data.Migrations
 {
     [DbContext(typeof(VoteEaseDbContext))]
-    partial class VoteEaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240403014505_UpdatedDatabase")]
+    partial class UpdatedDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

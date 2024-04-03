@@ -34,8 +34,7 @@ namespace VoteEase.Infrastructure.Votings
                     Name = item.Name,
                     PhoneNumber = item.PhoneNumber,
                     DateCreated = DateTime.UtcNow,
-                    Group = memberGroup,
-                    GroupId = memberGroup.Id
+                    Group = memberGroup ?? null
                 };
 
                 await memberGenericRepository.Create(member);
@@ -87,11 +86,10 @@ namespace VoteEase.Infrastructure.Votings
 
                 Member newMember = new()
                 {
-                    Id = member.Id,
+                    Id = Guid.NewGuid(),
                     Name = member.Name,
                     PhoneNumber = member.PhoneNumber,
                     DateCreated = DateTime.UtcNow,
-                    GroupId = member.GroupId,
                     Group = member.Group
                 };
 
@@ -118,7 +116,6 @@ namespace VoteEase.Infrastructure.Votings
                     Name = model.Name,
                     PhoneNumber = model.PhoneNumber,
                     DateCreated = DateTime.UtcNow,
-                    GroupId = model.GroupId,
                     Group = model.Group
                 };
 

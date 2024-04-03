@@ -6453,6 +6453,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Hangfire >= 1.8.11",
+      "Microsoft.EntityFrameworkCore >= 6.0.6",
       "Serilog >= 2.12.0",
       "VG.Serilog.Sinks.EntityFrameworkCore >= 1.0.0",
       "VoteEase.Application >= 1.0.0",
@@ -6524,6 +6525,10 @@
           "Hangfire": {
             "target": "Package",
             "version": "[1.8.11, )"
+          },
+          "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[6.0.6, )"
           },
           "Serilog": {
             "target": "Package",

@@ -54,10 +54,11 @@ namespace VoteEase.Infrastructure.Votings
             try
             {
                 var thisGroup = await groupGenericRepository.ReadSingle(group.Id);
+                if (thisGroup != null) return Map.GetModelResult<string>(null, null, false, "Group Already Exists.");
 
                 Group newGroup = new()
                 {
-                    Id = group.Id,
+                    Id = Guid.NewGuid(),
                     Name = group.Name,
                     LeaderId = group.LeaderId,
                     Leader = group.Leader,
@@ -83,7 +84,7 @@ namespace VoteEase.Infrastructure.Votings
 
                 Group updateGroup = new()
                 {
-                    Id = group.Id,
+                    Id = Guid.NewGuid(),
                     Name = group.Name,
                     LeaderId = group.LeaderId,
                     Leader = group.Leader,

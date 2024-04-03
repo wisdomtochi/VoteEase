@@ -131,7 +131,7 @@ namespace VoteEase.Infrastructure.Votings
 
                 Vote newVote = new()
                 {
-                    Id = vote.Id,
+                    Id = Guid.NewGuid(),
                     VoterId = vote.VoterId,
                     Voter = vote.Voter,
                     MemberId = vote.MemberId,
@@ -165,7 +165,7 @@ namespace VoteEase.Infrastructure.Votings
 
                 Vote newVote = new()
                 {
-                    Id = vote.Id,
+                    Id = Guid.NewGuid(),
                     VoterId = vote.VoterId,
                     Voter = vote.Voter,
                     MemberId = vote.MemberId,

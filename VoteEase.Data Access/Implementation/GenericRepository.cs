@@ -25,6 +25,11 @@ namespace VoteEase.Data_Access.Implementation
             return await table.FindAsync(id);
         }
 
+        public async Task<T> ReadSingle(Guid id, Guid Id)
+        {
+            return await table.FindAsync(id, Id);
+        }
+
         public async Task Create(T entity)
         {
             await dbContext.AddAsync(entity);
@@ -39,6 +44,12 @@ namespace VoteEase.Data_Access.Implementation
         public async Task Delete(Guid id)
         {
             var entity = await table.FindAsync(id);
+            dbContext.Remove(entity);
+        }
+
+        public async Task Delete(Guid id, Guid Id)
+        {
+            var entity = await table.FindAsync(id, Id);
             dbContext.Remove(entity);
         }
 

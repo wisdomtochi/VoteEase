@@ -18,10 +18,14 @@ namespace VoteEase.Data.Context
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<AccreditedMember> AccreditedMembers { get; set; }
         public virtual DbSet<MemberPasscode> MemberPasscodes { get; set; }
+        public virtual DbSet<MemberInGroup> MembersInGroups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MemberInGroup>()
+                .HasKey(e => new { e.MemberId, e.GroupId });
         }
     }
 }

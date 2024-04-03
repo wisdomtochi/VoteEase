@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VoteEase.Domain.Entities.Core
 {
@@ -13,8 +12,6 @@ namespace VoteEase.Domain.Entities.Core
         [Required]
         public string PhoneNumber { get; set; }
         public DateTime DateCreated { get; set; }
-        public Guid GroupId { get; set; }
-        [ForeignKey("GroupId")]
-        public Group Group { get; set; }
+        public Group? Group { get; set; }
     }
 }
