@@ -123,22 +123,22 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                var nominations = await nominationGenericRepository.ReadAll();
                 var checkVote = await voteGenericRepository.ReadSingle(vote.Id);
                 if (checkVote != null) return Map.GetModelResult<string>(null, null, false, "Vote Already Exists");
-
-
 
                 Vote newVote = new()
                 {
                     Id = Guid.NewGuid(),
-                    VoterId = vote.VoterId,
-                    Voter = vote.Voter,
+                    NominationId = vote.NominationId,
+                    VotedPerson = vote.VotedPerson,
                     MemberId = vote.MemberId,
-                    Member = vote.Member,
+                    Voter = vote.Voter,
                     Category = vote.Category,
                     DateCreated = vote.DateCreated
                 };
+
+                var wasVotedPersonNominated = await nominationGenericRepository.ReadSingle(newVote.NominationId);
+                if (wasVotedPersonNominated != null) return Map.GetModelResult<string>(null, null, false, "The Voted Person Was Not Nominated.");
 
                 //checking if the member is accredited
                 var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newVote.MemberId);
@@ -159,26 +159,24 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                var nominations = await nominationGenericRepository.ReadAll();
-                var checkVote = await voteGenericRepository.ReadSingle(voteId);
+                Vote checkVote = await voteGenericRepository.ReadSingle(voteId);
                 if (checkVote != null) return Map.GetModelResult<string>(null, null, false, "Vote Not Found");
 
-                Vote newVote = new()
-                {
-                    Id = Guid.NewGuid(),
-                    VoterId = vote.VoterId,
-                    Voter = vote.Voter,
-                    MemberId = vote.MemberId,
-                    Member = vote.Member,
-                    Category = vote.Category,
-                    DateCreated = vote.DateCreated
-                };
+                checkVote.NominationId = vote.NominationId;
+                checkVote.VotedPerson = vote.VotedPerson;
+                checkVote.MemberId = vote.MemberId;
+                checkVote.Voter = vote.Voter;
+                checkVote.Category = vote.Category;
+                checkVote.DateCreated = vote.DateCreated;
+
+                var wasVotedPersonNominated = await nominationGenericRepository.ReadSingle(checkVote.NominationId);
+                if (wasVotedPersonNominated != null) return Map.GetModelResult<string>(null, null, false, "The Voted Person Was Not Nominated.");
 
                 //checking if the member is accredited
-                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(newVote.MemberId);
+                var memberIsAccredited = await accreditedMemberGenericRepository.ReadSingle(checkVote.MemberId);
                 if (memberIsAccredited == null) return Map.GetModelResult<string>(null, null, false, "Vote Unsuccessful. You are unaccredited.");
 
-                voteGenericRepository.Update(newVote);
+                voteGenericRepository.Update(checkVote);
                 await voteGenericRepository.SaveChanges();
                 return Map.GetModelResult<string>(null, null, false, "Vote Successful.");
             }

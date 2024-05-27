@@ -118,7 +118,9 @@ namespace VoteEase.Infrastructure.Votings
 
                 AccreditedMember accreditedMember = new()
                 {
+                    Id = member.Id,
                     MemberId = member.MemberId,
+                    Member = member.Member,
                     DateAdded = DateTime.UtcNow
                 };
 
@@ -135,15 +137,13 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                var checkIfMemberIsInMembersTable = await memberGenericRepository.ReadSingle(memberId);
+                AccreditedMember accreditedMember = await accreditedMemberGenericRepository.ReadSingle(memberId);
 
-                if (checkIfMemberIsInMembersTable == null) return Map.GetModelResult<string>(null, null, false, "Member Does Not Exist.");
+                if (accreditedMember == null) return Map.GetModelResult<string>(null, null, false, "Member Does Not Exist.");
 
-                AccreditedMember accreditedMember = new()
-                {
-                    MemberId = member.MemberId,
-                    DateAdded = DateTime.UtcNow
-                };
+                accreditedMember.MemberId = member.MemberId;
+                accreditedMember.Member = member.Member;
+                accreditedMember.DateAdded = DateTime.UtcNow;
 
                 accreditedMemberGenericRepository.Update(accreditedMember);
                 await accreditedMemberGenericRepository.SaveChanges();

@@ -9,15 +9,15 @@ namespace VoteEase.DTO.WriteDTO
         [JsonProperty("id")]
         public Guid Id { get; set; }
         [JsonProperty("voter_id")]
-        public Guid VoterId { get; set; }
+        public Guid NominationId { get; set; }
         [JsonProperty("voter")]
-        public Member Voter { get; set; }
-        [JsonProperty("category_name")]
-        public Category Category { get; set; }
+        public Nomination VotedPerson { get; set; }
         [JsonProperty("member_id")]
         public Guid MemberId { get; set; }
         [JsonProperty("member")]
-        public Member Member { get; set; }
+        public Member Voter { get; set; }
+        [JsonProperty("category_name")]
+        public Category Category { get; set; }
         public DateTime DateCreated { get; set; }
 
     }

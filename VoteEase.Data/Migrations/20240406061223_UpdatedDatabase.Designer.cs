@@ -11,7 +11,7 @@ using VoteEase.Data.Context;
 namespace VoteEase.Data.Migrations
 {
     [DbContext(typeof(VoteEaseDbContext))]
-    [Migration("20240403014505_UpdatedDatabase")]
+    [Migration("20240406061223_UpdatedDatabase")]
     partial class UpdatedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,14 +23,19 @@ namespace VoteEase.Data.Migrations
 
             modelBuilder.Entity("VoteEase.Domain.Entities.Core.AccreditedMember", b =>
                 {
-                    b.Property<Guid>("MemberId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("MemberId");
+                    b.Property<Guid>("MemberId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
 
                     b.ToTable("AccreditedMembers");
                 });
@@ -158,14 +163,14 @@ namespace VoteEase.Data.Migrations
                     b.Property<Guid>("MemberId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("VoterId")
+                    b.Property<Guid>("NominationId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MemberId");
 
-                    b.HasIndex("VoterId");
+                    b.HasIndex("NominationId");
 
                     b.ToTable("Votes");
                 });
@@ -190,6 +195,17 @@ namespace VoteEase.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ErrorLogs");
+                });
+
+            modelBuilder.Entity("VoteEase.Domain.Entities.Core.AccreditedMember", b =>
+                {
+                    b.HasOne("VoteEase.Domain.Entities.Core.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("VoteEase.Domain.Entities.Core.Group", b =>
@@ -243,19 +259,19 @@ namespace VoteEase.Data.Migrations
 
             modelBuilder.Entity("VoteEase.Domain.Entities.Core.Vote", b =>
                 {
-                    b.HasOne("VoteEase.Domain.Entities.Core.Member", "Member")
+                    b.HasOne("VoteEase.Domain.Entities.Core.Member", "Voter")
                         .WithMany()
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VoteEase.Domain.Entities.Core.Member", "Voter")
+                    b.HasOne("VoteEase.Domain.Entities.Core.Nomination", "VotedPerson")
                         .WithMany()
-                        .HasForeignKey("VoterId")
+                        .HasForeignKey("NominationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.Navigation("VotedPerson");
 
                     b.Navigation("Voter");
                 });

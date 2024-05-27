@@ -9,13 +9,13 @@ namespace VoteEase.Domain.Entities.Core
         [Key]
         public Guid Id { get; set; }
         [Required]
-        public Guid VoterId { get; set; }
-        [ForeignKey("VoterId")]
-        public Member Voter { get; set; }
+        public Guid NominationId { get; set; }
+        [ForeignKey("NominationId")]
+        public Nomination VotedPerson { get; set; }
         [Required]
         public Guid MemberId { get; set; }
         [ForeignKey("MemberId")]
-        public Member Member { get; set; }
+        public Member Voter { get; set; }
         [Required]
         public Category Category { get; set; }
         public DateTime DateCreated { get; set; }

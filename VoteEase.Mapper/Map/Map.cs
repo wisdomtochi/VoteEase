@@ -69,7 +69,9 @@ namespace VoteEase.Mapper.Map
         {
             AccreditedMemberDTO member = new()
             {
+                Id = source.Id,
                 MemberId = source.MemberId,
+                Member = source.Member,
                 DateAdded = source.DateAdded
             };
 
@@ -85,7 +87,9 @@ namespace VoteEase.Mapper.Map
         {
             List<AccreditedMemberDTO> members = source.Select(x => new AccreditedMemberDTO
             {
+                Id = x.Id,
                 MemberId = x.MemberId,
+                Member = x.Member,
                 DateAdded = x.DateAdded
             }).ToList();
 
@@ -188,10 +192,10 @@ namespace VoteEase.Mapper.Map
             VoteDTO vote = new()
             {
                 Id = source.Id,
-                VoterId = source.VoterId,
-                Voter = source.Voter,
+                NominationId = source.NominationId,
+                VotedPerson = source.VotedPerson,
                 MemberId = source.MemberId,
-                Member = source.Member,
+                Voter = source.Voter,
                 Category = source.Category,
                 DateCreated = source.DateCreated
             };
@@ -209,10 +213,10 @@ namespace VoteEase.Mapper.Map
             List<VoteDTO> votes = source.Select(x => new VoteDTO()
             {
                 Id = x.Id,
-                VoterId = x.VoterId,
-                Voter = x.Voter,
+                NominationId = x.NominationId,
+                VotedPerson = x.VotedPerson,
                 MemberId = x.MemberId,
-                Member = x.Member,
+                Voter = x.Voter,
                 Category = x.Category,
                 DateCreated = x.DateCreated
             }).ToList();

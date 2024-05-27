@@ -73,14 +73,13 @@ namespace VoteEase.Infrastructure.Votings
                 var member = await memberGenericRepository.ReadSingle(newNomination.MemberId);
                 if (member == null) return Map.GetModelResult<string>(null, null, false, "Member cannot be found.");
 
-                if (!newNomination.GroupId.Equals(member.Group.Id)) return Map.GetModelResult<string>(null, null, false, "Nominate members from only your group.");
-
+                if (!newNomination.GroupId.Equals(member.Group.Id)) return Map.GetModelResult<string>(null, null, false, "Nominate members only from your group.");
 
                 await nominationGenericRepository.Create(newNomination);
                 await nominationGenericRepository.SaveChanges();
 
                 var checkTheNumberOfTimesAGroupNominatedACounsellor = nominationList.Count(n => n.GroupId == newNomination.GroupId && n.Category == Category.Counsellor);
-                if (checkTheNumberOfTimesAGroupNominatedACounsellor < 3) return Map.GetModelResult<string>(null, null, false, "You ought to nominate three counsellors.");
+                if (checkTheNumberOfTimesAGroupNominatedACounsellor < 3) return Map.GetModelResult<string>(null, null, false, "Nominate Only Three Counsellors.");
 
                 return Map.GetModelResult<string>(null, null, true, "Nomination Successful.");
             }
@@ -93,22 +92,17 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                var checkNomination = await nominationGenericRepository.ReadSingle(nominationId);
+                Nomination checkNomination = await nominationGenericRepository.ReadSingle(nominationId);
                 if (checkNomination == null) return Map.GetModelResult<string>(null, null, false, "Nomination Not Found");
 
+                checkNomination.GroupId = nomination.GroupId;
+                checkNomination.Group = nomination.Group;
+                checkNomination.MemberId = nomination.MemberId;
+                checkNomination.Member = nomination.Member;
+                checkNomination.DateCreated = DateTime.UtcNow;
+                checkNomination.Category = nomination.Category;
 
-                Nomination newNomination = new()
-                {
-                    Id = Guid.NewGuid(),
-                    GroupId = nomination.GroupId,
-                    Group = nomination.Group,
-                    MemberId = nomination.MemberId,
-                    Member = nomination.Member,
-                    DateCreated = DateTime.UtcNow,
-                    Category = nomination.Category
-                };
-
-                nominationGenericRepository.Update(newNomination);
+                nominationGenericRepository.Update(checkNomination);
                 await nominationGenericRepository.SaveChanges();
 
                 return Map.GetModelResult<string>(null, null, true, "Nomination Has Been Updated");

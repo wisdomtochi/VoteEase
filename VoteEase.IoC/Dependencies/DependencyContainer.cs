@@ -112,6 +112,7 @@ namespace VoteEase.IoC.Dependencies
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<INominationService, NominationService>();
             services.AddScoped<IAccreditedMemberService, AccreditedMemberService>();
+            services.AddScoped<IMemberInGroupService, MemberInGroupService>();
             services.AddScoped<IVoteService, VoteService>();
             services.AddTransient<IErrorService, ErrorService>();
             #endregion

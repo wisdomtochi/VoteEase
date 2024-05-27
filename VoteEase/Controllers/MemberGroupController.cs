@@ -22,7 +22,7 @@ namespace VoteEase.API.Controllers
         }
 
         [HttpGet]
-        [Route("member_groups/member/{memberId}/{groupId}")]
+        [Route("member_groups/member/get/{memberId}/{groupId}")]
         public async Task<IActionResult> GetMember([FromRoute] Guid memberId, [FromRoute] Guid groupId)
         {
             try

@@ -11,10 +11,13 @@ namespace VoteEase.Infrastructure.Votings
     public class MemberService : IMemberService
     {
         private readonly IGenericRepository<Member> memberGenericRepository;
+        private readonly IGenericRepository<MemberInGroup> memberInGroupGenericRepository;
 
-        public MemberService(IGenericRepository<Member> memberGenericRepository)
+        public MemberService(IGenericRepository<Member> memberGenericRepository,
+                            IGenericRepository<MemberInGroup> memberInGroupGenericRepository)
         {
             this.memberGenericRepository = memberGenericRepository;
+            this.memberInGroupGenericRepository = memberInGroupGenericRepository;
         }
 
         public async Task<ModelResult<string>> AddMembersFromExcel(List<MemberExcelSheet> model)
@@ -107,19 +110,28 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                Member isMemberNull = await memberGenericRepository.ReadSingle(memberId);
-                if (isMemberNull == null) return Map.GetModelResult<string>(null, null, false, "Member Not Found");
+                Member member = await memberGenericRepository.ReadSingle(memberId);
+                if (member == null) return Map.GetModelResult<string>(null, null, false, "Member Not Found");
 
-                Member newMember = new()
+                member.Name = model.Name;
+                member.PhoneNumber = model.PhoneNumber;
+                member.DateCreated = DateTime.UtcNow;
+                member.Group = model.Group;
+
+                if (member.Group != null)
                 {
-                    Id = memberId,
-                    Name = model.Name,
-                    PhoneNumber = model.PhoneNumber,
-                    DateCreated = DateTime.UtcNow,
-                    Group = model.Group
-                };
+                    MemberInGroup memberInGroupExists = await memberInGroupGenericRepository.ReadSingle(memberId, member.Group.Id);
 
-                memberGenericRepository.Update(newMember);
+                    memberInGroupExists.MemberId = memberId;
+                    memberInGroupExists.Member = member;
+                    memberInGroupExists.GroupId = member.Group.Id;
+                    memberInGroupExists.Group = member.Group;
+
+                    if (memberInGroupExists != null) memberInGroupGenericRepository.Update(memberInGroupExists);
+                    await memberInGroupGenericRepository.SaveChanges();
+                }
+
+                memberGenericRepository.Update(member);
                 await memberGenericRepository.SaveChanges();
                 return Map.GetModelResult<string>(null, null, true, "Member Details Updated");
             }
@@ -133,8 +145,16 @@ namespace VoteEase.Infrastructure.Votings
         {
             try
             {
-                Member isMemberNull = await memberGenericRepository.ReadSingle(memberId);
-                if (isMemberNull == null) return Map.GetModelResult<string>(null, null, false, "Member Not Found");
+                Member memberExists = await memberGenericRepository.ReadSingle(memberId);
+                if (memberExists == null) return Map.GetModelResult<string>(null, null, false, "Member Not Found");
+
+                if (memberExists.Group != null)
+                {
+                    var memberInGroupExists = await memberInGroupGenericRepository.ReadSingle(memberId, memberExists.Group.Id);
+
+                    if (memberInGroupExists != null) await memberInGroupGenericRepository.Delete(memberId, memberExists.Group.Id);
+                    await memberInGroupGenericRepository.SaveChanges();
+                }
 
                 await memberGenericRepository.Delete(memberId);
                 await memberGenericRepository.SaveChanges();

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VoteEase.Mapper")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4851cb17b297a8c39652838b8d61162e94b921a7")]
 [assembly: System.Reflection.AssemblyProductAttribute("VoteEase.Mapper")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VoteEase.Mapper")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

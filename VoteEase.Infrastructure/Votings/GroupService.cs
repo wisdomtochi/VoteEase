@@ -10,10 +10,13 @@ namespace VoteEase.Infrastructure.Votings
     public class GroupService : IGroupService
     {
         private readonly IGenericRepository<Group> groupGenericRepository;
+        private readonly IGenericRepository<MemberInGroup> memberInGroupGenericRepository;
 
-        public GroupService(IGenericRepository<Group> groupGenericRepository)
+        public GroupService(IGenericRepository<Group> groupGenericRepository,
+                            IGenericRepository<MemberInGroup> memberInGroupGenericRepository)
         {
             this.groupGenericRepository = groupGenericRepository;
+            this.memberInGroupGenericRepository = memberInGroupGenericRepository;
         }
 
         #region crud
@@ -60,7 +63,7 @@ namespace VoteEase.Infrastructure.Votings
                 {
                     Id = Guid.NewGuid(),
                     Name = group.Name,
-                    LeaderId = group.LeaderId,
+                    LeaderId = group.Leader.Id,
                     Leader = group.Leader,
                     DateAdded = DateTime.UtcNow
                 };
@@ -75,23 +78,22 @@ namespace VoteEase.Infrastructure.Votings
             }
         }
 
-        public async Task<ModelResult<string>> UpdateGroupDetails(Group group, Guid groupId)
+        public async Task<ModelResult<string>> UpdateGroupDetails(Group model, Guid groupId)
         {
             try
             {
-                Group thisGroup = await groupGenericRepository.ReadSingle(groupId);
-                if (thisGroup == null) return Map.GetModelResult<string>(null, null, false, "Group Not Found");
+                Group group = await groupGenericRepository.ReadSingle(groupId);
+                if (group == null) return Map.GetModelResult<string>(null, null, false, "Group Not Found");
 
-                Group updateGroup = new()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = group.Name,
-                    LeaderId = group.LeaderId,
-                    Leader = group.Leader,
-                    DateAdded = DateTime.UtcNow
-                };
+                group.Name = model.Name;
+                group.LeaderId = model.LeaderId;
+                group.Leader = model.Leader;
+                group.DateAdded = DateTime.UtcNow;
 
-                groupGenericRepository.Update(updateGroup);
+                var isLeaderAlreadyInGroup = await memberInGroupGenericRepository.ReadSingle(group.LeaderId, group.Id);
+                if (isLeaderAlreadyInGroup == null) return Map.GetModelResult<string>(null, null, false, "Add Leader To Group First.");
+
+                groupGenericRepository.Update(group);
                 await groupGenericRepository.SaveChanges();
                 return Map.GetModelResult<string>(null, null, true, "Group Details Updated");
             }
@@ -107,6 +109,14 @@ namespace VoteEase.Infrastructure.Votings
             {
                 Group group = await groupGenericRepository.ReadSingle(groupId);
                 if (group == null) return Map.GetModelResult<string>(null, null, false, "Group Not Found");
+
+                var member = await memberInGroupGenericRepository.ReadSingle(group.LeaderId, group.Id);
+
+                if (member != null)
+                {
+                    await memberInGroupGenericRepository.Delete(group.LeaderId, group.Id);
+                    await memberInGroupGenericRepository.SaveChanges();
+                }
 
                 await groupGenericRepository.Delete(groupId);
                 await groupGenericRepository.SaveChanges();
